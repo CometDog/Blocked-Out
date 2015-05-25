@@ -1,5 +1,8 @@
 {
-    "appKeys": {},
+    "appKeys": {
+        "COUNTRY": 0,
+        "TEMPERATURE": 1
+    },
     "capabilities": [
         "location"
     ],
@@ -7,15 +10,82 @@
     "longName": "Blocked Out",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "fonts/RobotoCondensed-Bold.ttf",
+                "name": "ROBOTO_CONDENSED_BOLD_19",
+                "type": "font"
+            },
+            {
+                "menuIcon": true,
+                "type": "png",
+                "name": "ICON",
+                "file": "images/icon.png"
+            },
+            {
+                "file": "images/one.png",
+                "name": "ONE",
+                "type": "png"
+            },
+            {
+                "file": "images/two.png",
+                "name": "TWO",
+                "type": "png"
+            },
+            {
+                "file": "images/three.png",
+                "name": "THREE",
+                "type": "png"
+            },
+            {
+                "file": "images/four.png",
+                "name": "FOUR",
+                "type": "png"
+            },
+            {
+                "file": "images/five.png",
+                "name": "FIVE",
+                "type": "png"
+            },
+            {
+                "file": "images/six.png",
+                "name": "SIX",
+                "type": "png"
+            },
+            {
+                "file": "images/seven.png",
+                "name": "SEVEN",
+                "type": "png"
+            },
+            {
+                "file": "images/eight.png",
+                "name": "EIGHT",
+                "type": "png"
+            },
+            {
+                "file": "images/nine.png",
+                "name": "NINE",
+                "type": "png"
+            },
+            {
+                "file": "images/zero.png",
+                "name": "ZERO",
+                "type": "png"
+            },
+            {
+                "file": "images/background.png",
+                "name": "BACKGROUND",
+                "type": "png"
+            }
+        ]
     },
     "sdkVersion": "3",
     "shortName": "Blocked Out",
     "targetPlatforms": [
-        "aplite",
         "basalt"
     ],
     "uuid": "26430506-bddb-4186-be49-74b6ea31bc1e",
+    "versionCode": "1",
     "versionLabel": "1.0",
     "watchapp": {
         "watchface": true
