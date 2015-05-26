@@ -23,6 +23,10 @@ Blocked Out
 #include "libs/pebble-assist.h"
 #include "elements.h"
 
+/********************************************
+            Additional Functions
+********************************************/
+
 char *upcase(char *str)
 {
     for (int i = 0; str[i] != 0; i++) {
@@ -32,6 +36,10 @@ char *upcase(char *str)
     }
     return str;
 }
+
+/********************************************
+          Receive Data From Phone
+********************************************/
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   Tuple *t = dict_read_first(iterator);
@@ -88,6 +96,10 @@ static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResul
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
+
+/********************************************
+                Animations
+********************************************/
 
 static void anim_stopped_handler(Animation *animation, bool finished, void *context) {
   if (finished && again == true) {
@@ -240,6 +252,10 @@ static void do_animation() {
     again = true;
   }
 }
+
+/********************************************
+         Update Screen Information
+********************************************/
 
 static void update_bg(Layer *layer, GContext *ctx) {
   
@@ -413,6 +429,10 @@ static void update_bt(Layer *layer, GContext *ctx) {
   #endif
 }
 
+/********************************************
+            Function Handlers
+********************************************/
+
 static void timer_callback(void *data) {
   animations = false;
 }
@@ -450,6 +470,10 @@ static void bt_handler(bool connected) {
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
 }
+
+/********************************************
+             Window Load/Unload
+********************************************/
 
 static void main_window_load(Window *window) {
   GRect bounds = window_get_bounds(window);
@@ -598,6 +622,10 @@ static void main_window_unload(Window *window) {
   gbitmap_destroy_safe(s_minute1_bitmap);
   gbitmap_destroy_safe(s_minute2_bitmap);
 }
+
+/********************************************
+               (De)Initialize
+********************************************/
 
 static void init() {
   s_main_window = window_create();
