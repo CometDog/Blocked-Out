@@ -1,7 +1,9 @@
 {
     "appKeys": {
         "COUNTRY": 0,
-        "TEMPERATURE": 1
+        "TEMPERATURE": 1,
+        "TEMP_LOW": 2,
+        "TEMP_HIGH": 3
     },
     "capabilities": [
         "location"
@@ -13,7 +15,7 @@
         "media": [
             {
                 "file": "fonts/RobotoCondensed-Bold.ttf",
-                "name": "ROBOTO_CONDENSED_BOLD_19",
+                "name": "ROBOTO_CONDENSED_BOLD_17",
                 "type": "font"
             },
             {

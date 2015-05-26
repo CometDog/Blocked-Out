@@ -30,12 +30,13 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       country = (int)t->value->int8;
       break;
     case TEMPERATURE:
-      if (country == 0) {
-        degree = ((int)t->value->int16) + 10;
-      }
-      else if (country == 1) {
-        degree = ((int)(32 + (((int)t->value->int16) * 1.8))) + 10;
-      }
+      degree = (int)t->value->int16;
+      break;
+    case TEMP_LOW:
+      low = (int)t->value->int16;
+      break;
+    case TEMP_HIGH:
+      high = (int)t->value->int16;
       break;
     default:
       APP_LOG(APP_LOG_LEVEL_ERROR, "] %d not recognized!", (int)t->key);
@@ -45,9 +46,40 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     t = dict_read_next(iterator);
   }
   
-  print_int(s_weather_buffer, "%d°", degree);
+  if (country == 1) {
+    degree = (32 + degree) * 1.8;
+    low = (32 + low) * 1.8;
+    high = (32 + high) * 1.8;
+  }
+
+  degree = degree + 10;
+  low = low + 10;
+  high = high + 10;
+  
+  if (degree < 100) {
+    print_int(s_weather_buffer, "%d°", degree);
+  }
+  else {
+    print_int(s_weather_buffer, "%d", degree);
+  }
+  
+  if (low < 100) {
+    print_int(s_low_buffer, "L:%d°", low);
+  }
+  else {
+    print_int(s_low_buffer, "L:%d", low);
+  }
+  
+  if (high < 100) {
+    print_int(s_high_buffer, "H:%d°", high);
+  }
+  else {
+    print_int(s_high_buffer, "H:%d", high);
+  }
 
   text_layer_set_text(s_weather_label, s_weather_buffer);
+  text_layer_set_text(s_low_label, s_low_buffer);
+  text_layer_set_text(s_high_label, s_high_buffer);
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -67,7 +99,6 @@ char *upcase(char *str)
             str[i] -= 0x20;
         }
     }
-
     return str;
 }
 
@@ -83,6 +114,57 @@ static void anim_stopped_handler(Animation *animation, bool finished, void *cont
     do_minute1 = false;
     do_minute2 = false;
   }
+}
+
+static void shake_animation() {
+  GRect shake_start, shake_finish;
+  
+  shake_start = GRect(0,73,144,0);
+  shake_finish = GRect(0,73,144,28);
+  
+  if (shake_reverse != true) {
+    s_shake_animation = property_animation_create_layer_frame(s_lht_label, &shake_start, &shake_finish);
+  }
+  else {
+    s_shake_animation = property_animation_create_layer_frame(s_lht_label, &shake_finish, &shake_start);
+  }
+  animation_set_duration((Animation*)s_shake_animation, ANIM_DURATION);
+  animation_set_delay((Animation*)s_shake_animation, ANIM_DELAY_SUN);
+  animation_set_curve((Animation*)s_shake_animation, AnimationCurveLinear);
+  animation_schedule((Animation*)s_shake_animation);
+}
+
+static void info_animation() {
+  GRect info_start, info_finish;
+  GRect date_1_start, date_1_finish;
+  GRect date_2_start, date_2_finish;
+  
+  info_start = GRect(0,0,144,0);
+  info_finish = GRect(0,0,144,168);
+  
+  date_1_start = GRect(0,0,0,168);
+  date_1_finish = GRect(0,0,72,168);
+  
+  date_2_start = GRect(144,0,0,168);
+  date_2_finish = GRect(72,0,72,168);
+  
+  s_info_animation = property_animation_create_layer_frame(s_info_layer, &info_start, &info_finish);
+  animation_set_duration((Animation*)s_info_animation, ANIM_DURATION);
+  animation_set_delay((Animation*)s_info_animation, ANIM_DELAY_INFO);
+  animation_set_curve((Animation*)s_info_animation, AnimationCurveLinear);
+  animation_schedule((Animation*)s_info_animation);
+  
+  s_date_1_animation = property_animation_create_layer_frame(s_date_1_layer, &date_1_start, &date_1_finish);
+  animation_set_duration((Animation*)s_date_1_animation, ANIM_DURATION);
+  animation_set_delay((Animation*)s_date_1_animation, ANIM_DELAY_INFO);
+  animation_set_curve((Animation*)s_date_1_animation, AnimationCurveLinear);
+  animation_schedule((Animation*)s_date_1_animation);
+  
+  s_date_2_animation = property_animation_create_layer_frame(s_date_2_layer, &date_2_start, &date_2_finish);
+  animation_set_duration((Animation*)s_date_2_animation, ANIM_DURATION);
+  animation_set_delay((Animation*)s_date_2_animation, ANIM_DELAY_INFO);
+  animation_set_curve((Animation*)s_date_2_animation, AnimationCurveLinear);
+  animation_schedule((Animation*)s_date_2_animation);
 }
 
 static void do_animation() {
@@ -304,16 +386,21 @@ static void update_bat(Layer *layer, GContext *ctx) {
   graphics_context_set_fill_color(ctx, GColorRed);
   graphics_fill_rect(ctx, GRect(68,0,8,red_height), 0, GCornerNone);
   graphics_fill_rect(ctx, GRect(68,red_Y,8,70), 0, GCornerNone);
+  
   graphics_context_set_fill_color(ctx, GColorYellow);
   graphics_fill_rect(ctx, GRect(68,0,8,yellow_height), 0, GCornerNone);
   graphics_fill_rect(ctx, GRect(68,yellow_Y,8,70), 0, GCornerNone);
+  
   graphics_context_set_fill_color(ctx, GColorGreen);
   graphics_fill_rect(ctx, GRect(68,0,8,green_height), 0, GCornerNone);
   graphics_fill_rect(ctx, GRect(68,green_Y,8,70), 0, GCornerNone);
 }
 
 static void update_bt(Layer *layer, GContext *ctx) {
-  graphics_context_set_fill_color(ctx, GColorDukeBlue);
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_rect(ctx, GRect(64,76,16,16), 2, GCornersAll);
+  
+  graphics_context_set_fill_color(ctx, GColorElectricUltramarine);
   graphics_fill_rect(ctx, GRect(65,77,14,14), 2, GCornersAll);
 }
 
@@ -321,10 +408,23 @@ static void timer_callback(void *data) {
   animations = false;
 }
 
+static void timer_2_callback(void *data) {
+  shake_reverse = true;
+  shake_animation();
+  sun_on = false;
+}
+
 static void tap_handler(AccelAxisType axis, int32_t direction) {
+  if (sun_on == false) {
+    shake_reverse = false;
+    shake_animation();
+    sun_on = true;
+  }
   animations = true;
   app_timer_cancel(timer);
+  app_timer_cancel(timer_2);
   timer = app_timer_register(180 * 1000, timer_callback, NULL);
+  timer_2 = app_timer_register(3 * 1000, timer_2_callback, NULL);
 }
 
 static void bt_handler(bool connected) {
@@ -347,9 +447,13 @@ static void main_window_load(Window *window) {
   
   window_set_background_color(window, GColorDarkGray);
   
-  s_info_font = fonts_load_resource_font(RESOURCE_ID_ROBOTO_CONDENSED_BOLD_19);
+  s_info_font = fonts_load_resource_font(RESOURCE_ID_ROBOTO_CONDENSED_BOLD_17);
   
   s_background_layer = layer_create(bounds);
+  s_info_layer = layer_create(GRect(0,0,144,0));
+  s_date_1_layer = layer_create(GRect(0,0,0,168));
+  s_date_2_layer = layer_create(GRect(144,0,0,168));
+  s_lht_label = layer_create(GRect(0,73,144,0));
   s_bluetooth_layer = layer_create(bounds);
   s_battery_layer = layer_create(bounds);
   
@@ -358,10 +462,12 @@ static void main_window_load(Window *window) {
   s_minute1_parent = layer_create(GRect(0,252,BOX_X,BOX_Y));
   s_minute2_parent = layer_create(GRect(216,84,BOX_X,BOX_Y));
   
-  s_weather_label = text_layer_create(GRect(0,72,62,28));
-  s_day_label = text_layer_create(GRect(0,72,62,28));
-  s_month_label = text_layer_create(GRect(82,72,62,28));
-  s_date_label = text_layer_create(GRect(82,72,62,28));
+  s_weather_label = text_layer_create(GRect(0,73,62,23));
+  s_day_label = text_layer_create(GRect(0,73,62,23));
+  s_month_label = text_layer_create(GRect(10,73,62,23));
+  s_date_label = text_layer_create(GRect(10,73,62,23));
+  s_low_label = text_layer_create(GRect(0,0,62,23));
+  s_high_label = text_layer_create(GRect(82,0,62,23));
   
   s_hour1_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
   s_hour2_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
@@ -377,25 +483,38 @@ static void main_window_load(Window *window) {
   text_layer_set_colors(s_day_label, GColorWhite, GColorClear);
   text_layer_set_colors(s_month_label, GColorWhite, GColorClear);
   text_layer_set_colors(s_date_label, GColorWhite, GColorClear);
+  text_layer_set_colors(s_low_label, GColorWhite, GColorDarkGray);
+  text_layer_set_colors(s_high_label, GColorWhite, GColorDarkGray);
   
   text_layer_set_text_alignment(s_weather_label, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_day_label, GTextAlignmentRight);
   text_layer_set_text_alignment(s_month_label, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_date_label, GTextAlignmentRight);
+  text_layer_set_text_alignment(s_low_label, GTextAlignmentCenter);
+  text_layer_set_text_alignment(s_high_label, GTextAlignmentCenter);
   
-  text_layer_set_text(s_weather_label, "LOAD");
+  text_layer_set_text(s_weather_label, "...");
+  text_layer_set_text(s_low_label, "LOW");
+  text_layer_set_text(s_high_label, "HIGH");
   
   text_layer_set_font(s_weather_label, s_info_font);
   text_layer_set_font(s_day_label, s_info_font);
   text_layer_set_font(s_month_label, s_info_font);
   text_layer_set_font(s_date_label, s_info_font);
+  text_layer_set_font(s_low_label, s_info_font);
+  text_layer_set_font(s_high_label, s_info_font);
   
   layer_set_update_proc(s_bluetooth_layer, update_bt);
   layer_set_update_proc(s_battery_layer, update_bat);
   
   layer_add_to_window(s_background_layer, window);
-  layer_add_to_layer(s_bluetooth_layer, s_background_layer);
-  layer_add_to_layer(s_battery_layer, s_background_layer);
+  layer_add_to_window(s_info_layer, window);
+  layer_add_to_window(s_date_1_layer, window);
+  layer_add_to_window(s_date_2_layer, window);
+  layer_add_to_window(s_lht_label, window);
+  
+  layer_add_to_layer(s_bluetooth_layer, s_info_layer);
+  layer_add_to_layer(s_battery_layer, s_info_layer);
   
   layer_add_to_layer(s_hour1_parent, s_background_layer);
   layer_add_to_layer(s_hour2_parent, s_background_layer);
@@ -407,10 +526,12 @@ static void main_window_load(Window *window) {
   bitmap_layer_add_to_layer(s_minute1_layer, s_minute1_parent);
   bitmap_layer_add_to_layer(s_minute2_layer, s_minute2_parent);
   
-  text_layer_add_to_layer(s_weather_label, s_background_layer);
-  text_layer_add_to_layer(s_day_label, s_background_layer);
-  text_layer_add_to_layer(s_month_label, s_background_layer);
-  text_layer_add_to_layer(s_date_label, s_background_layer);
+  text_layer_add_to_layer(s_weather_label, s_date_1_layer);
+  text_layer_add_to_layer(s_day_label, s_date_1_layer);
+  text_layer_add_to_layer(s_month_label, s_date_2_layer);
+  text_layer_add_to_layer(s_date_label, s_date_2_layer);
+  text_layer_add_to_layer(s_low_label, s_lht_label);
+  text_layer_add_to_layer(s_high_label, s_lht_label);
   
   bt_connected = bluetooth_connection_service_peek();
   if (bt_connected) {
@@ -425,10 +546,15 @@ static void main_window_load(Window *window) {
 }
 
 static void main_window_unload(Window *window) {
-  layer_destroy_safe(s_background_layer);
-  layer_destroy_safe(s_bluetooth_layer);
-  
   fonts_unload_custom_font(s_info_font);
+  
+  layer_destroy_safe(s_background_layer);
+  layer_destroy_safe(s_info_layer);
+  layer_destroy_safe(s_date_1_layer);
+  layer_destroy_safe(s_date_2_layer);
+  layer_destroy_safe(s_lht_label);
+  layer_destroy_safe(s_bluetooth_layer);
+  layer_destroy_safe(s_battery_layer);
   
   layer_destroy_safe(s_hour1_parent);
   layer_destroy_safe(s_hour2_parent);
@@ -444,6 +570,8 @@ static void main_window_unload(Window *window) {
   text_layer_destroy_safe(s_day_label);
   text_layer_destroy_safe(s_month_label);
   text_layer_destroy_safe(s_date_label);
+  text_layer_destroy_safe(s_low_label);
+  text_layer_destroy_safe(s_high_label);
   
   gbitmap_destroy_safe(s_hour1_bitmap);
   gbitmap_destroy_safe(s_hour2_bitmap);
@@ -468,6 +596,7 @@ static void init() {
   
   timer = app_timer_register(180 * 1000, timer_callback, NULL);
   
+  info_animation();
   do_hour1 = true;
   do_hour2 = true;
   do_minute1 = true;

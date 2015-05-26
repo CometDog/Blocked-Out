@@ -26,9 +26,15 @@ function locationSuccess(pos) {
 
       var temperature = Math.round(json.main.temp - 273.15);
       
+      var low = json.main.temp_min;
+      
+      var high = json.main.temp_max;
+      
       var dictionary = {
         "COUNTRY": cof,
-        "TEMPERATURE": temperature
+        "TEMPERATURE": temperature,
+        "TEMP_LOW": low,
+        "TEMP_HIGH": high
       };
 
       MessageQueue.sendAppMessage(dictionary,
