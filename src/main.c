@@ -176,17 +176,17 @@ static void do_animation() {
   GRect minute1_start, minute1_finish;
   GRect minute2_start, minute2_finish;
   
-  hour1_start = GRect(-144, -168, BOX_X, BOX_Y);
+  hour1_start = GRect(-0, -168, BOX_X, BOX_Y);
   hour1_finish = GRect(0, 0, BOX_X, BOX_Y);
   
-  hour2_start = GRect(225, -168, BOX_X, BOX_Y);
-  hour2_finish = GRect(81, 0, BOX_X, BOX_Y);
+  hour2_start = GRect(81, -168, BOX_X, BOX_Y);
+  hour2_finish = GRect(82, 0, BOX_X, BOX_Y);
 
-  minute1_start = GRect(-144, 266, BOX_X, BOX_Y);
+  minute1_start = GRect(0, 266, BOX_X, BOX_Y);
   minute1_finish = GRect(0, 98, BOX_X, BOX_Y);
 
-  minute2_start = GRect(225, 266, BOX_X, BOX_Y);
-  minute2_finish = GRect(81, 98, BOX_X, BOX_Y);
+  minute2_start = GRect(82, 266, BOX_X, BOX_Y);
+  minute2_finish = GRect(82, 98, BOX_X, BOX_Y);
 
   if (do_hour1 == true) {
     if (do_reverse == true) {
@@ -453,7 +453,7 @@ static void tap_handler(AccelAxisType axis, int32_t direction) {
   app_timer_cancel(timer);
   app_timer_cancel(timer_2);
   timer = app_timer_register(180 * 1000, timer_callback, NULL);
-  timer_2 = app_timer_register(3 * 1000, timer_2_callback, NULL);
+  timer_2 = app_timer_register(2 * 1000, timer_2_callback, NULL);
 }
 
 static void bt_handler(bool connected) {
@@ -494,10 +494,10 @@ static void main_window_load(Window *window) {
   s_bluetooth_layer = layer_create(bounds);
   s_battery_layer = layer_create(bounds);
   
-  s_hour1_parent = layer_create(GRect(-144,0,BOX_X,BOX_Y));
+  s_hour1_parent = layer_create(GRect(0,-168,BOX_X,BOX_Y));
   s_hour2_parent = layer_create(GRect(72,-168,BOX_X,BOX_Y));
   s_minute1_parent = layer_create(GRect(0,252,BOX_X,BOX_Y));
-  s_minute2_parent = layer_create(GRect(216,84,BOX_X,BOX_Y));
+  s_minute2_parent = layer_create(GRect(72,252,BOX_X,BOX_Y));
   
   s_weather_label = text_layer_create(GRect(0,73,62,23));
   s_day_label = text_layer_create(GRect(0,73,62,23));

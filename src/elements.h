@@ -15,7 +15,7 @@ Blocked Out
 #define ANIM_DURATION 500
 #define ANIM_DELAY 300
 #define ANIM_DELAY_INFO 800
-#define ANIM_DELAY_SUN 0
+#define ANIM_DELAY_SUN 1000
 
 static Window *s_main_window;
 static Layer *s_background_layer, *s_info_layer, *s_date_1_layer, *s_date_2_layer, *s_ch_layer, *s_bluetooth_layer, *s_battery_layer;
