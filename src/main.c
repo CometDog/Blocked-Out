@@ -354,68 +354,36 @@ static void update_time() {
 
 static void update_bat(Layer *layer, GContext *ctx) {
   bat = battery_state_service_peek().charge_percent / 10;
-  Y_bat = bat;
+  
+  if (bat == 0) {
+    bat = 1;
+  }
+
+  int16_t bat_height;
+  int16_t bat_height_2;
+  
+  bat_height = bat * 7;
+  bat_height_2 = 70 - bat_height;
+  
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_rect(ctx, GRect(71,98,3,bat_height), 0, GCornerNone);
+  graphics_fill_rect(ctx, GRect(71,0,3,70), 0, GCornerNone);
   
   #ifdef PBL_COLOR
-  
-    int16_t green_height;
-    int16_t yellow_height;
-    int16_t red_height;
-    int16_t green_Y = 10;
-    int16_t yellow_Y = 10;
-    int16_t red_Y = 10;
-  
-    while (Y_bat < 10) {
-      green_Y += 1;
-      if (Y_bat < 4) {
-        yellow_Y += 1;
-      }
-      Y_bat += 1;
-    }
-  
-    green_height = bat * 7;
-    green_Y = 28 + (7 * green_Y);
-  
-    if (bat < 4) {
-      bat = bat + 6;
-      yellow_height = (bat * 14) - 70;
-      yellow_Y = 28 + (14 * yellow_Y) - 70;
-    }
-    else {
-      yellow_height = 70;
-      yellow_Y = 98;
-    }
-  
-    red_height = 70;
-    red_Y = 98;
-  
-    graphics_context_set_fill_color(ctx, GColorRed);
-    graphics_fill_rect(ctx, GRect(68,0,8,red_height), 0, GCornerNone);
-    graphics_fill_rect(ctx, GRect(68,red_Y,8,70), 0, GCornerNone);
-  
-    graphics_context_set_fill_color(ctx, GColorYellow);
-    graphics_fill_rect(ctx, GRect(68,0,8,yellow_height), 0, GCornerNone);
-    graphics_fill_rect(ctx, GRect(68,yellow_Y,8,70), 0, GCornerNone);
-  
-    graphics_context_set_fill_color(ctx, GColorGreen);
-    graphics_fill_rect(ctx, GRect(68,0,8,green_height), 0, GCornerNone);
-    graphics_fill_rect(ctx, GRect(68,green_Y,8,70), 0, GCornerNone);
+    graphics_context_set_fill_color(ctx, GColorDarkGray);
   #else
+    graphics_context_set_fill_color(ctx, GColorBlack);
+  #endif
+  graphics_fill_rect(ctx, GRect(71,0,3,bat_height_2), 0, GCornerNone);
   
-    int16_t BW_height;
-    int16_t BW_Y = 10;
-  
-    while (Y_bat < 10) {
-      BW_Y += 1;
-      Y_bat += 1;
+  #ifdef PBL_COLOR
+    if (bat <= 1) {
+      graphics_context_set_fill_color(ctx, GColorWhite);
+      graphics_fill_rect(ctx, GRect(65,77,14,14), 2, GCornersAll);
+      
+      graphics_context_set_fill_color(ctx, GColorRed);
+      graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
     }
-  
-    BW_height = bat * 7;
-    BW_Y = 28 + (7 * BW_Y);
-  
-    graphics_context_set_fill_color(ctx, GColorWhite);
-    graphics_fill_rect(ctx, GRect(68,0,8,BW_height), 0, GCornerNone);
-    graphics_fill_rect(ctx, GRect(68,BW_Y,8,70), 0, GCornerNone);
   #endif
 }
 
