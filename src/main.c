@@ -17,7 +17,9 @@ Blocked Out
 */
 
 #include "pebble.h"
-#include "gcolor_definitions.h"
+#ifdef PBL_COLOR
+  #include "gcolor_definitions.h"
+#endif
 #include "libs/pebble-assist.h"
 #include "elements.h"
 
@@ -127,10 +129,10 @@ static void info_animation() {
   info_start = GRect(0,0,144,0);
   info_finish = GRect(0,0,144,168);
   
-  date_1_start = GRect(0,0,0,168);
+  date_1_start = GRect(-72,0,72,168);
   date_1_finish = GRect(0,0,72,168);
   
-  date_2_start = GRect(144,0,0,168);
+  date_2_start = GRect(144,0,72,168);
   date_2_finish = GRect(72,0,72,168);
   
   s_info_animation = property_animation_create_layer_frame(s_info_layer, &info_start, &info_finish);
@@ -142,13 +144,13 @@ static void info_animation() {
   s_date_1_animation = property_animation_create_layer_frame(s_date_1_layer, &date_1_start, &date_1_finish);
   animation_set_duration((Animation*)s_date_1_animation, ANIM_DURATION);
   animation_set_delay((Animation*)s_date_1_animation, ANIM_DELAY_INFO);
-  animation_set_curve((Animation*)s_date_1_animation, AnimationCurveLinear);
+  animation_set_curve((Animation*)s_date_1_animation, AnimationCurveEaseInOut);
   animation_schedule((Animation*)s_date_1_animation);
   
   s_date_2_animation = property_animation_create_layer_frame(s_date_2_layer, &date_2_start, &date_2_finish);
   animation_set_duration((Animation*)s_date_2_animation, ANIM_DURATION);
   animation_set_delay((Animation*)s_date_2_animation, ANIM_DELAY_INFO);
-  animation_set_curve((Animation*)s_date_2_animation, AnimationCurveLinear);
+  animation_set_curve((Animation*)s_date_2_animation, AnimationCurveEaseInOut);
   animation_schedule((Animation*)s_date_2_animation);
 }
 
@@ -162,16 +164,16 @@ static void do_animation() {
   GRect minute1_start, minute1_finish;
   GRect minute2_start, minute2_finish;
   
-  hour1_start = GRect(-144, 0, BOX_X, BOX_Y);
+  hour1_start = GRect(-144, -168, BOX_X, BOX_Y);
   hour1_finish = GRect(0, 0, BOX_X, BOX_Y);
   
-  hour2_start = GRect(81, -168, BOX_X, BOX_Y);
+  hour2_start = GRect(225, -168, BOX_X, BOX_Y);
   hour2_finish = GRect(81, 0, BOX_X, BOX_Y);
 
-  minute1_start = GRect(0, 266, BOX_X, BOX_Y);
+  minute1_start = GRect(-144, 266, BOX_X, BOX_Y);
   minute1_finish = GRect(0, 98, BOX_X, BOX_Y);
 
-  minute2_start = GRect(225, 98, BOX_X, BOX_Y);
+  minute2_start = GRect(225, 266, BOX_X, BOX_Y);
   minute2_finish = GRect(81, 98, BOX_X, BOX_Y);
 
   if (do_hour1 == true) {
@@ -336,57 +338,79 @@ static void update_time() {
 
 static void update_bat(Layer *layer, GContext *ctx) {
   bat = battery_state_service_peek().charge_percent / 10;
-  int16_t Y_bat = bat;
-  int16_t green_height;
-  int16_t yellow_height;
-  int16_t red_height;
-  int16_t green_Y = 10;
-  int16_t yellow_Y = 10;
-  int16_t red_Y = 10;
+  Y_bat = bat;
   
-  while (Y_bat < 10) {
-    green_Y += 1;
-    if (Y_bat < 4) {
-      yellow_Y += 1;
+  #ifdef PBL_COLOR
+  
+    int16_t green_height;
+    int16_t yellow_height;
+    int16_t red_height;
+    int16_t green_Y = 10;
+    int16_t yellow_Y = 10;
+    int16_t red_Y = 10;
+  
+    while (Y_bat < 10) {
+      green_Y += 1;
+      if (Y_bat < 4) {
+        yellow_Y += 1;
+      }
+      Y_bat += 1;
     }
-    Y_bat += 1;
-  }
   
-  green_height = bat * 7;
-  green_Y = 28 + (7 * green_Y);
+    green_height = bat * 7;
+    green_Y = 28 + (7 * green_Y);
   
-  if (bat < 4) {
-    bat = bat + 6;
-    yellow_height = (bat * 14) - 70;
-    yellow_Y = 28 + (14 * yellow_Y) - 70;
-  }
-  else {
-    yellow_height = 70;
-    yellow_Y = 98;
-  }
+    if (bat < 4) {
+      bat = bat + 6;
+      yellow_height = (bat * 14) - 70;
+      yellow_Y = 28 + (14 * yellow_Y) - 70;
+    }
+    else {
+      yellow_height = 70;
+      yellow_Y = 98;
+    }
   
-  red_height = 70;
-  red_Y = 98;
+    red_height = 70;
+    red_Y = 98;
   
-  graphics_context_set_fill_color(ctx, GColorRed);
-  graphics_fill_rect(ctx, GRect(68,0,8,red_height), 0, GCornerNone);
-  graphics_fill_rect(ctx, GRect(68,red_Y,8,70), 0, GCornerNone);
+    graphics_context_set_fill_color(ctx, GColorRed);
+    graphics_fill_rect(ctx, GRect(68,0,8,red_height), 0, GCornerNone);
+    graphics_fill_rect(ctx, GRect(68,red_Y,8,70), 0, GCornerNone);
   
-  graphics_context_set_fill_color(ctx, GColorYellow);
-  graphics_fill_rect(ctx, GRect(68,0,8,yellow_height), 0, GCornerNone);
-  graphics_fill_rect(ctx, GRect(68,yellow_Y,8,70), 0, GCornerNone);
+    graphics_context_set_fill_color(ctx, GColorYellow);
+    graphics_fill_rect(ctx, GRect(68,0,8,yellow_height), 0, GCornerNone);
+    graphics_fill_rect(ctx, GRect(68,yellow_Y,8,70), 0, GCornerNone);
   
-  graphics_context_set_fill_color(ctx, GColorGreen);
-  graphics_fill_rect(ctx, GRect(68,0,8,green_height), 0, GCornerNone);
-  graphics_fill_rect(ctx, GRect(68,green_Y,8,70), 0, GCornerNone);
+    graphics_context_set_fill_color(ctx, GColorGreen);
+    graphics_fill_rect(ctx, GRect(68,0,8,green_height), 0, GCornerNone);
+    graphics_fill_rect(ctx, GRect(68,green_Y,8,70), 0, GCornerNone);
+  #else
+  
+    int16_t BW_height;
+    int16_t BW_Y = 10;
+  
+    while (Y_bat < 10) {
+      BW_Y += 1;
+      Y_bat += 1;
+    }
+  
+    BW_height = bat * 7;
+    BW_Y = 28 + (7 * BW_Y);
+  
+    graphics_context_set_fill_color(ctx, GColorWhite);
+    graphics_fill_rect(ctx, GRect(68,0,8,BW_height), 0, GCornerNone);
+    graphics_fill_rect(ctx, GRect(68,BW_Y,8,70), 0, GCornerNone);
+  #endif
 }
 
 static void update_bt(Layer *layer, GContext *ctx) {
   graphics_context_set_fill_color(ctx, GColorWhite);
-  graphics_fill_rect(ctx, GRect(64,76,16,16), 2, GCornersAll);
-  
-  graphics_context_set_fill_color(ctx, GColorElectricUltramarine);
   graphics_fill_rect(ctx, GRect(65,77,14,14), 2, GCornersAll);
+  
+  #ifdef PBL_COLOR
+    graphics_context_set_fill_color(ctx, GColorElectricUltramarine);
+    graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
+  #endif
 }
 
 static void timer_callback(void *data) {
@@ -430,7 +454,11 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 static void main_window_load(Window *window) {
   GRect bounds = window_get_bounds(window);
   
-  window_set_background_color(window, GColorDarkGray);
+  #ifdef PBL_COLOR
+    window_set_background_color(window, GColorDarkGray);
+  #else
+    window_set_background_color(window, GColorBlack);
+  #endif
   
   s_info_font = fonts_load_resource_font(RESOURCE_ID_ROBOTO_CONDENSED_BOLD_17);
   
@@ -459,17 +487,24 @@ static void main_window_load(Window *window) {
   s_minute1_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
   s_minute2_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
   
-  bitmap_layer_set_compositing_mode(s_hour1_layer, GCompOpSet);
-  bitmap_layer_set_compositing_mode(s_hour2_layer, GCompOpSet);
-  bitmap_layer_set_compositing_mode(s_minute1_layer, GCompOpSet);
-  bitmap_layer_set_compositing_mode(s_minute2_layer, GCompOpSet);
+  #ifdef PBL_COLOR
+    bitmap_layer_set_compositing_mode(s_hour1_layer, GCompOpSet);
+    bitmap_layer_set_compositing_mode(s_hour2_layer, GCompOpSet);
+    bitmap_layer_set_compositing_mode(s_minute1_layer, GCompOpSet);
+    bitmap_layer_set_compositing_mode(s_minute2_layer, GCompOpSet);
+  #endif
   
   text_layer_set_colors(s_weather_label, GColorWhite, GColorClear);
   text_layer_set_colors(s_day_label, GColorWhite, GColorClear);
   text_layer_set_colors(s_month_label, GColorWhite, GColorClear);
   text_layer_set_colors(s_date_label, GColorWhite, GColorClear);
-  text_layer_set_colors(s_conditions_label, GColorWhite, GColorDarkGray);
-  text_layer_set_colors(s_humidity_label, GColorWhite, GColorDarkGray);
+  #ifdef PBL_COLOR
+    text_layer_set_colors(s_conditions_label, GColorWhite, GColorDarkGray);
+    text_layer_set_colors(s_humidity_label, GColorWhite, GColorDarkGray);
+  #else
+    text_layer_set_colors(s_conditions_label, GColorWhite, GColorBlack);
+    text_layer_set_colors(s_humidity_label, GColorWhite, GColorBlack);
+  #endif
   
   text_layer_set_text_alignment(s_weather_label, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_day_label, GTextAlignmentRight);

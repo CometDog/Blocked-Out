@@ -48,6 +48,7 @@ static char *conditions;
 static int16_t humidity;
 
 static int16_t bat;
+static int16_t Y_bat;
 
 static int8_t first_run = 1;
   

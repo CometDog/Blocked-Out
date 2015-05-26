@@ -84,6 +84,7 @@
     "sdkVersion": "3",
     "shortName": "Blocked Out",
     "targetPlatforms": [
+        "aplite",
         "basalt"
     ],
     "uuid": "26430506-bddb-4186-be49-74b6ea31bc1e",
