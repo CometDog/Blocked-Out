@@ -2,8 +2,8 @@
     "appKeys": {
         "COUNTRY": 0,
         "TEMPERATURE": 1,
-        "TEMP_LOW": 2,
-        "TEMP_HIGH": 3
+        "CONDITIONS": 2,
+        "HUMIDITY": 3
     },
     "capabilities": [
         "location"

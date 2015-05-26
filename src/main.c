@@ -21,6 +21,16 @@ Blocked Out
 #include "libs/pebble-assist.h"
 #include "elements.h"
 
+char *upcase(char *str)
+{
+    for (int i = 0; str[i] != 0; i++) {
+        if (str[i] >= 'a' && str[i] <= 'z') {
+            str[i] -= 0x20;
+        }
+    }
+    return str;
+}
+
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   Tuple *t = dict_read_first(iterator);
 
@@ -32,11 +42,11 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     case TEMPERATURE:
       degree = (int)t->value->int16;
       break;
-    case TEMP_LOW:
-      low = (int)t->value->int16;
+    case CONDITIONS:
+      conditions = t->value->cstring;
       break;
-    case TEMP_HIGH:
-      high = (int)t->value->int16;
+    case HUMIDITY:
+      humidity = (int)t->value->int16;
       break;
     default:
       APP_LOG(APP_LOG_LEVEL_ERROR, "] %d not recognized!", (int)t->key);
@@ -47,14 +57,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   }
   
   if (country == 1) {
-    degree = (32 + degree) * 1.8;
-    low = (32 + low) * 1.8;
-    high = (32 + high) * 1.8;
+    degree = (1.8 * degree) + 42;
   }
-
-  degree = degree + 10;
-  low = low + 10;
-  high = high + 10;
   
   if (degree < 100) {
     print_int(s_weather_buffer, "%d°", degree);
@@ -63,23 +67,14 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     print_int(s_weather_buffer, "%d", degree);
   }
   
-  if (low < 100) {
-    print_int(s_low_buffer, "L:%d°", low);
-  }
-  else {
-    print_int(s_low_buffer, "L:%d", low);
-  }
+  print_int(s_conditions_buffer, "%s", conditions);
+  print_int(s_humidity_buffer, "H:%d%%", humidity);
   
-  if (high < 100) {
-    print_int(s_high_buffer, "H:%d°", high);
-  }
-  else {
-    print_int(s_high_buffer, "H:%d", high);
-  }
+  upcase(s_conditions_buffer);
 
   text_layer_set_text(s_weather_label, s_weather_buffer);
-  text_layer_set_text(s_low_label, s_low_buffer);
-  text_layer_set_text(s_high_label, s_high_buffer);
+  text_layer_set_text(s_conditions_label, s_conditions_buffer);
+  text_layer_set_text(s_humidity_label, s_humidity_buffer);
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -90,16 +85,6 @@ static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResul
 }
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
-}
-
-char *upcase(char *str)
-{
-    for (int i = 0; str[i] != 0; i++) {
-        if (str[i] >= 'a' && str[i] <= 'z') {
-            str[i] -= 0x20;
-        }
-    }
-    return str;
 }
 
 static void anim_stopped_handler(Animation *animation, bool finished, void *context) {
@@ -123,10 +108,10 @@ static void shake_animation() {
   shake_finish = GRect(0,73,144,28);
   
   if (shake_reverse != true) {
-    s_shake_animation = property_animation_create_layer_frame(s_lht_label, &shake_start, &shake_finish);
+    s_shake_animation = property_animation_create_layer_frame(s_ch_layer, &shake_start, &shake_finish);
   }
   else {
-    s_shake_animation = property_animation_create_layer_frame(s_lht_label, &shake_finish, &shake_start);
+    s_shake_animation = property_animation_create_layer_frame(s_ch_layer, &shake_finish, &shake_start);
   }
   animation_set_duration((Animation*)s_shake_animation, ANIM_DURATION);
   animation_set_delay((Animation*)s_shake_animation, ANIM_DELAY_SUN);
@@ -453,7 +438,7 @@ static void main_window_load(Window *window) {
   s_info_layer = layer_create(GRect(0,0,144,0));
   s_date_1_layer = layer_create(GRect(0,0,0,168));
   s_date_2_layer = layer_create(GRect(144,0,0,168));
-  s_lht_label = layer_create(GRect(0,73,144,0));
+  s_ch_layer = layer_create(GRect(0,73,144,0));
   s_bluetooth_layer = layer_create(bounds);
   s_battery_layer = layer_create(bounds);
   
@@ -466,8 +451,8 @@ static void main_window_load(Window *window) {
   s_day_label = text_layer_create(GRect(0,73,62,23));
   s_month_label = text_layer_create(GRect(10,73,62,23));
   s_date_label = text_layer_create(GRect(10,73,62,23));
-  s_low_label = text_layer_create(GRect(0,0,62,23));
-  s_high_label = text_layer_create(GRect(82,0,62,23));
+  s_conditions_label = text_layer_create(GRect(0,0,62,23));
+  s_humidity_label = text_layer_create(GRect(82,0,62,23));
   
   s_hour1_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
   s_hour2_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
@@ -483,26 +468,26 @@ static void main_window_load(Window *window) {
   text_layer_set_colors(s_day_label, GColorWhite, GColorClear);
   text_layer_set_colors(s_month_label, GColorWhite, GColorClear);
   text_layer_set_colors(s_date_label, GColorWhite, GColorClear);
-  text_layer_set_colors(s_low_label, GColorWhite, GColorDarkGray);
-  text_layer_set_colors(s_high_label, GColorWhite, GColorDarkGray);
+  text_layer_set_colors(s_conditions_label, GColorWhite, GColorDarkGray);
+  text_layer_set_colors(s_humidity_label, GColorWhite, GColorDarkGray);
   
   text_layer_set_text_alignment(s_weather_label, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_day_label, GTextAlignmentRight);
   text_layer_set_text_alignment(s_month_label, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_date_label, GTextAlignmentRight);
-  text_layer_set_text_alignment(s_low_label, GTextAlignmentCenter);
-  text_layer_set_text_alignment(s_high_label, GTextAlignmentCenter);
+  text_layer_set_text_alignment(s_conditions_label, GTextAlignmentCenter);
+  text_layer_set_text_alignment(s_humidity_label, GTextAlignmentCenter);
   
   text_layer_set_text(s_weather_label, "...");
-  text_layer_set_text(s_low_label, "LOW");
-  text_layer_set_text(s_high_label, "HIGH");
+  text_layer_set_text(s_conditions_label, "COND");
+  text_layer_set_text(s_humidity_label, "HUMID");
   
   text_layer_set_font(s_weather_label, s_info_font);
   text_layer_set_font(s_day_label, s_info_font);
   text_layer_set_font(s_month_label, s_info_font);
   text_layer_set_font(s_date_label, s_info_font);
-  text_layer_set_font(s_low_label, s_info_font);
-  text_layer_set_font(s_high_label, s_info_font);
+  text_layer_set_font(s_conditions_label, s_info_font);
+  text_layer_set_font(s_humidity_label, s_info_font);
   
   layer_set_update_proc(s_bluetooth_layer, update_bt);
   layer_set_update_proc(s_battery_layer, update_bat);
@@ -511,7 +496,7 @@ static void main_window_load(Window *window) {
   layer_add_to_window(s_info_layer, window);
   layer_add_to_window(s_date_1_layer, window);
   layer_add_to_window(s_date_2_layer, window);
-  layer_add_to_window(s_lht_label, window);
+  layer_add_to_window(s_ch_layer, window);
   
   layer_add_to_layer(s_bluetooth_layer, s_info_layer);
   layer_add_to_layer(s_battery_layer, s_info_layer);
@@ -530,8 +515,8 @@ static void main_window_load(Window *window) {
   text_layer_add_to_layer(s_day_label, s_date_1_layer);
   text_layer_add_to_layer(s_month_label, s_date_2_layer);
   text_layer_add_to_layer(s_date_label, s_date_2_layer);
-  text_layer_add_to_layer(s_low_label, s_lht_label);
-  text_layer_add_to_layer(s_high_label, s_lht_label);
+  text_layer_add_to_layer(s_conditions_label, s_ch_layer);
+  text_layer_add_to_layer(s_humidity_label, s_ch_layer);
   
   bt_connected = bluetooth_connection_service_peek();
   if (bt_connected) {
@@ -552,7 +537,7 @@ static void main_window_unload(Window *window) {
   layer_destroy_safe(s_info_layer);
   layer_destroy_safe(s_date_1_layer);
   layer_destroy_safe(s_date_2_layer);
-  layer_destroy_safe(s_lht_label);
+  layer_destroy_safe(s_ch_layer);
   layer_destroy_safe(s_bluetooth_layer);
   layer_destroy_safe(s_battery_layer);
   
@@ -570,8 +555,8 @@ static void main_window_unload(Window *window) {
   text_layer_destroy_safe(s_day_label);
   text_layer_destroy_safe(s_month_label);
   text_layer_destroy_safe(s_date_label);
-  text_layer_destroy_safe(s_low_label);
-  text_layer_destroy_safe(s_high_label);
+  text_layer_destroy_safe(s_conditions_label);
+  text_layer_destroy_safe(s_humidity_label);
   
   gbitmap_destroy_safe(s_hour1_bitmap);
   gbitmap_destroy_safe(s_hour2_bitmap);

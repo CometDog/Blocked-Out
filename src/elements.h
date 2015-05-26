@@ -6,8 +6,8 @@ Blocked Out
 
 #define COUNTRY 0
 #define TEMPERATURE 1
-#define TEMP_LOW 2
-#define TEMP_HIGH 3
+#define CONDITIONS 2
+#define HUMIDITY 3
 
 #define BOX_X 63
 #define BOX_Y 70
@@ -18,8 +18,8 @@ Blocked Out
 #define ANIM_DELAY_SUN 0
 
 static Window *s_main_window;
-static Layer *s_background_layer, *s_info_layer, *s_date_1_layer, *s_date_2_layer, *s_lht_label, *s_bluetooth_layer, *s_battery_layer;
-static TextLayer *s_weather_label, *s_day_label, *s_month_label, *s_date_label, *s_low_label, *s_high_label;
+static Layer *s_background_layer, *s_info_layer, *s_date_1_layer, *s_date_2_layer, *s_ch_layer, *s_bluetooth_layer, *s_battery_layer;
+static TextLayer *s_weather_label, *s_day_label, *s_month_label, *s_date_label, *s_conditions_label, *s_humidity_label;
 static Layer *s_hour1_parent, *s_hour2_parent, *s_minute1_parent, *s_minute2_parent;
 static BitmapLayer *s_hour1_layer, *s_hour2_layer, *s_minute1_layer, *s_minute2_layer;
 static GBitmap *s_hour1_bitmap, *s_hour2_bitmap, *s_minute1_bitmap, *s_minute2_bitmap; 
@@ -42,6 +42,10 @@ static int16_t degree;
 
 static int16_t low;
 static int16_t high;
+
+static char *conditions;
+
+static int16_t humidity;
 
 static int16_t bat;
 
@@ -66,6 +70,8 @@ static char s_month_buffer[] = "XXX";
 static char s_date_buffer[] = "XX";
 static char s_low_buffer[] = "L:XXXX";
 static char s_high_buffer[] = "H:XXXX";
+static char s_conditions_buffer[32];
+static char s_humidity_buffer[] = "H:XXXX";
 
 const int TIME_RESOURCE_IDS[] = {
   RESOURCE_ID_ZERO,
