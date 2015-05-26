@@ -1107,19 +1107,19 @@ OUTPUT(/Users/James/Development Workspaces/Pebble/Blocked-Out/build/aplite/pebbl
  .comment       0x0000000000000000       0x4f aplite/appinfo.auto.c.47.o
  .comment       0x0000000000000000       0x4f /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
 
-.debug_info     0x0000000000000000     0x336a
- .debug_info    0x0000000000000000     0x2db6 src/main.c.47.o
- .debug_info    0x0000000000002db6      0x389 aplite/appinfo.auto.c.47.o
- .debug_info    0x000000000000313f       0xb9 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
- .debug_info    0x00000000000031f8       0xb9 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
- .debug_info    0x00000000000032b1       0xb9 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
+.debug_info     0x0000000000000000     0x3370
+ .debug_info    0x0000000000000000     0x2dbc src/main.c.47.o
+ .debug_info    0x0000000000002dbc      0x389 aplite/appinfo.auto.c.47.o
+ .debug_info    0x0000000000003145       0xb9 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
+ .debug_info    0x00000000000031fe       0xb9 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
+ .debug_info    0x00000000000032b7       0xb9 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
 
-.debug_abbrev   0x0000000000000000      0x5b5
- .debug_abbrev  0x0000000000000000      0x4db src/main.c.47.o
- .debug_abbrev  0x00000000000004db       0x9e aplite/appinfo.auto.c.47.o
- .debug_abbrev  0x0000000000000579       0x14 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
- .debug_abbrev  0x000000000000058d       0x14 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
- .debug_abbrev  0x00000000000005a1       0x14 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
+.debug_abbrev   0x0000000000000000      0x5c4
+ .debug_abbrev  0x0000000000000000      0x4ea src/main.c.47.o
+ .debug_abbrev  0x00000000000004ea       0x9e aplite/appinfo.auto.c.47.o
+ .debug_abbrev  0x0000000000000588       0x14 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_addsubdf3.o)
+ .debug_abbrev  0x000000000000059c       0x14 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_muldivdf3.o)
+ .debug_abbrev  0x00000000000005b0       0x14 /Users/James/pebble-dev/PebbleSDK-3.0-beta12/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/libgcc.a(_arm_fixdfsi.o)
 
 .debug_loc      0x0000000000000000      0x68a
  .debug_loc     0x0000000000000000      0x68a src/main.c.47.o
