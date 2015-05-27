@@ -358,11 +358,18 @@ static void update_bat(Layer *layer, GContext *ctx) {
   if (bat == 0) {
     bat = 1;
   }
+  
+  int8_t Y_bat = bat % 2;
+  
 
   int16_t bat_height;
   int16_t bat_height_2;
-  
-  bat_height = bat * 7;
+  if (bat == 0) {
+    bat_height = (bat / 2) * 14;
+  }
+  else {
+    bat_height = ((bat + 1) / 2) * 14;
+  }
   bat_height_2 = 70 - bat_height;
   
   graphics_context_set_fill_color(ctx, GColorWhite);
@@ -377,11 +384,14 @@ static void update_bat(Layer *layer, GContext *ctx) {
   graphics_fill_rect(ctx, GRect(71,0,3,bat_height_2), 0, GCornerNone);
   
   #ifdef PBL_COLOR
+    graphics_context_set_fill_color(ctx, GColorWhite);
+    graphics_fill_rect(ctx, GRect(65,77,14,14), 2, GCornersAll);
     if (bat <= 1) {
-      graphics_context_set_fill_color(ctx, GColorWhite);
-      graphics_fill_rect(ctx, GRect(65,77,14,14), 2, GCornersAll);
-      
       graphics_context_set_fill_color(ctx, GColorRed);
+      graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
+    }
+    else {
+      graphics_context_set_fill_color(ctx, GColorDarkGray);
       graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
     }
   #endif
@@ -427,11 +437,11 @@ static void tap_handler(AccelAxisType axis, int32_t direction) {
 static void bt_handler(bool connected) {
   if (connected) {
     vibes_short_pulse();
-    layer_show(s_bluetooth_layer);
+    layer_hide(s_bluetooth_layer);
   }
   else {
     vibes_double_pulse();
-    layer_hide(s_bluetooth_layer);
+    layer_show(s_bluetooth_layer);
   }
 }
 
@@ -547,10 +557,10 @@ static void main_window_load(Window *window) {
   
   bt_connected = bluetooth_connection_service_peek();
   if (bt_connected) {
-    layer_show(s_bluetooth_layer);
+    layer_hide(s_bluetooth_layer);
   }
   else {
-    layer_hide(s_bluetooth_layer);
+    layer_show(s_bluetooth_layer);
   }
   
   update_time();
