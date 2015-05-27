@@ -383,9 +383,9 @@ static void update_bat(Layer *layer, GContext *ctx) {
   #endif
   graphics_fill_rect(ctx, GRect(71,0,3,bat_height_2), 0, GCornerNone);
   
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_rect(ctx, GRect(65,77,14,14), 2, GCornersAll);
   #ifdef PBL_COLOR
-    graphics_context_set_fill_color(ctx, GColorWhite);
-    graphics_fill_rect(ctx, GRect(65,77,14,14), 2, GCornersAll);
     if (bat <= 1) {
       graphics_context_set_fill_color(ctx, GColorRed);
       graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
@@ -394,6 +394,9 @@ static void update_bat(Layer *layer, GContext *ctx) {
       graphics_context_set_fill_color(ctx, GColorDarkGray);
       graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
     }
+  #else
+    graphics_context_set_fill_color(ctx, GColorBlack);
+    graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
   #endif
 }
 
