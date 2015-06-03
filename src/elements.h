@@ -58,6 +58,8 @@ static int16_t degree2;
 static int16_t degree3;
 static int16_t degree4;
 
+static bool night;
+
 static int16_t low;
 static int16_t high;
 

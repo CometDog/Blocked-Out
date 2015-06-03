@@ -38,6 +38,12 @@ static char *upcase(char *str)
 }
 
 static void conditions_select(int16_t cond) {
+  time_t epoch = time(NULL); 
+  struct tm *t = localtime(&epoch);
+  
+  if (t->tm_hour >= 20 || t->tm_hour <= 6) {
+    night = true;
+  }
   int16_t conditions = cond;
   
   if (conditions >= 200 && conditions <= 232) {
@@ -54,9 +60,15 @@ static void conditions_select(int16_t cond) {
   }
   else if (conditions == 800) {
     conditions = 0;
+    if (night == true) {
+      conditions += 3;
+    }
   }
   else if (conditions >= 801 && conditions <= 802) {
     conditions = 2;
+    if (night == true) {
+      conditions += 3;
+    }
   }
   else if (conditions >= 803 && conditions <= 804) {
     conditions = 6;
@@ -180,7 +192,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   text_layer_set_text(s_weather3_label, s_weather3_buffer);
   text_layer_set_text(s_weather4_label, s_weather4_buffer);
   
-  text_layer_set_text(s_conditions_label, "+12");
+  text_layer_set_text(s_conditions_label, "+12 HRS");
   text_layer_set_text(s_humidity_label, s_humidity_buffer);
 }
 
@@ -545,11 +557,7 @@ static void update_bat(Layer *layer, GContext *ctx) {
   graphics_fill_rect(ctx, GRect(71,98,3,bat_height), 0, GCornerNone);
   graphics_fill_rect(ctx, GRect(71,0,3,70), 0, GCornerNone);
   
-  #ifdef PBL_COLOR
-    graphics_context_set_fill_color(ctx, GColorBlack);
-  #else
-    graphics_context_set_fill_color(ctx, GColorBlack);
-  #endif
+  graphics_context_set_fill_color(ctx, GColorBlack);
   graphics_fill_rect(ctx, GRect(71,0,3,bat_height_2), 0, GCornerNone);
   
   graphics_context_set_fill_color(ctx, GColorWhite);
@@ -628,11 +636,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 static void main_window_load(Window *window) {
   GRect bounds = window_get_bounds(window);
   
-  #ifdef PBL_COLOR
-    window_set_background_color(window, GColorBlack);
-  #else
-    window_set_background_color(window, GColorBlack);
-  #endif
+  window_set_background_color(window, GColorBlack);
   
   s_info_font = fonts_load_resource_font(RESOURCE_ID_ROBOTO_CONDENSED_BOLD_17);
   
@@ -696,14 +700,9 @@ static void main_window_load(Window *window) {
   text_layer_set_colors(s_day_label, GColorWhite, GColorClear);
   text_layer_set_colors(s_month_label, GColorWhite, GColorClear);
   text_layer_set_colors(s_date_label, GColorWhite, GColorClear);
-  #ifdef PBL_COLOR
-    text_layer_set_colors(s_conditions_label, GColorWhite, GColorBlack);
-    text_layer_set_colors(s_humidity_label, GColorWhite, GColorBlack);
-  #else
-    text_layer_set_colors(s_conditions_label, GColorWhite, GColorBlack);
-    text_layer_set_colors(s_humidity_label, GColorWhite, GColorBlack);
-  #endif
-  
+  text_layer_set_colors(s_conditions_label, GColorWhite, GColorBlack);
+  text_layer_set_colors(s_humidity_label, GColorWhite, GColorBlack);
+
   text_layer_set_text_alignment(s_weather_label, GTextAlignmentLeft);
   text_layer_set_text_alignment(s_weather1_label, GTextAlignmentCenter);
   text_layer_set_text_alignment(s_weather2_label, GTextAlignmentCenter);
