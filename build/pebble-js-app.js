@@ -8,14 +8,14 @@ var MessageQueue=function(){var RETRY_MAX=5;var queue=[];var sending=false;var t
 };
 
 function locationSuccess(pos) {
-  var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
-      pos.coords.latitude + "&lon=" + pos.coords.longitude;
+  var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" +
+      pos.coords.latitude + "&lon=" + pos.coords.longitude + "&cnt=1";
 
   xhrRequest(url, 'GET', 
     function(responseText) {
       var json = JSON.parse(responseText);
       
-      var country = json.sys.country;
+      var country = json.city.country;
       var cof;
       if (country == "US" || country == "BS" || country == "BZ" || country == "KY" || country == "PW" || country == "AR") {
         cof = 1;
@@ -24,16 +24,22 @@ function locationSuccess(pos) {
         cof = 0;
       }
 
-      var temperature = Math.round(json.main.temp - 273.15);
+      var temperature = Math.round(json.list[0].main.temp - 273.15);
       
-      var conditions = json.weather[0].main;
+      var conditions1 = json.list[0].weather[0].id;
+      var conditions2 = json.list[1].weather[0].id;
+      var conditions3 = json.list[2].weather[0].id;
+      var conditions4 = json.list[3].weather[0].id;
       
-      var humidity = json.main.humidity;
+      var humidity = json.list[0].main.humidity;
       
       var dictionary = {
         "COUNTRY": cof,
         "TEMPERATURE": temperature,
-        "CONDITIONS": conditions,
+        "CONDITIONS_1": conditions1,
+        "CONDITIONS_2": conditions2,
+        "CONDITIONS_3": conditions3,
+        "CONDITIONS_4": conditions4,
         "HUMIDITY": humidity
       };
 

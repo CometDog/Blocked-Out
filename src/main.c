@@ -27,7 +27,7 @@ Blocked Out
             Additional Functions
 ********************************************/
 
-char *upcase(char *str)
+static char *upcase(char *str)
 {
     for (int i = 0; str[i] != 0; i++) {
         if (str[i] >= 'a' && str[i] <= 'z') {
@@ -35,6 +35,72 @@ char *upcase(char *str)
         }
     }
     return str;
+}
+
+static void conditions_select(int16_t cond) {
+  int16_t conditions = cond;
+  
+  if (conditions >= 200 && conditions <= 232) {
+    conditions = 9;
+  }
+  else if (conditions >= 300 && conditions <= 321) {
+    conditions = 7;
+  }
+  else if (conditions >= 500 && conditions <= 622) {
+    conditions = 8;
+  }
+  else if (conditions >= 701 && conditions <= 781) {
+    conditions = 10;
+  }
+  else if (conditions == 800) {
+    conditions = 0;
+  }
+  else if (conditions >= 801 && conditions <= 802) {
+    conditions = 2;
+  }
+  else if (conditions >= 803 && conditions <= 804) {
+    conditions = 6;
+  }
+  else {
+    conditions = 10;
+  }
+  
+  if (i == 0) {
+    conditions1 = conditions;
+  }
+  else if (i == 1) {
+    conditions2 = conditions;
+  }
+  else if (i == 2) {
+    conditions3 = conditions;
+  }
+  else if (i == 3) {
+    conditions4 = conditions;
+  }
+  i += 1 % 3;
+}
+
+static void weather_conditions() {
+  
+  conditions_select(conditions1);
+  conditions_select(conditions2);
+  conditions_select(conditions3);
+  conditions_select(conditions4);
+
+  gbitmap_destroy_safe(s_weather1_bitmap);
+  gbitmap_destroy_safe(s_weather2_bitmap);
+  gbitmap_destroy_safe(s_weather3_bitmap);
+  gbitmap_destroy_safe(s_weather4_bitmap);
+  
+  s_weather1_bitmap = gbitmap_create_with_resource(WEATHER_RESOURCE_IDS[conditions1]);
+  s_weather2_bitmap = gbitmap_create_with_resource(WEATHER_RESOURCE_IDS[conditions2]);
+  s_weather3_bitmap = gbitmap_create_with_resource(WEATHER_RESOURCE_IDS[conditions3]);
+  s_weather4_bitmap = gbitmap_create_with_resource(WEATHER_RESOURCE_IDS[conditions4]);
+  
+  bitmap_layer_set_bitmap(s_weather1_layer, s_weather1_bitmap);
+  bitmap_layer_set_bitmap(s_weather2_layer, s_weather2_bitmap);
+  bitmap_layer_set_bitmap(s_weather3_layer, s_weather3_bitmap);
+  bitmap_layer_set_bitmap(s_weather4_layer, s_weather4_bitmap);
 }
 
 /********************************************
@@ -52,8 +118,17 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     case TEMPERATURE:
       degree = (int)t->value->int16;
       break;
-    case CONDITIONS:
-      conditions = t->value->cstring;
+    case CONDITIONS_1:
+      conditions1 = (int)t->value->int16;
+      break;
+    case CONDITIONS_2:
+      conditions2 = (int)t->value->int16;
+      break;
+    case CONDITIONS_3:
+      conditions3 = (int)t->value->int16;
+      break;
+    case CONDITIONS_4:
+      conditions4 = (int)t->value->int16;
       break;
     case HUMIDITY:
       humidity = (int)t->value->int16;
@@ -66,6 +141,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     t = dict_read_next(iterator);
   }
   
+  weather_conditions();
+  
   if (country == 1) {
     degree = (1.8 * degree) + 42;
   }
@@ -77,13 +154,10 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     print_int(s_weather_buffer, "%d", degree);
   }
   
-  print_int(s_conditions_buffer, "%s", conditions);
   print_int(s_humidity_buffer, "H:%d%%", humidity);
-  
-  upcase(s_conditions_buffer);
 
   text_layer_set_text(s_weather_label, s_weather_buffer);
-  text_layer_set_text(s_conditions_label, s_conditions_buffer);
+  text_layer_set_text(s_conditions_label, "+12");
   text_layer_set_text(s_humidity_label, s_humidity_buffer);
 }
 
@@ -131,6 +205,67 @@ static void shake_animation() {
   animation_set_delay((Animation*)s_shake_animation, ANIM_DELAY_SUN);
   animation_set_curve((Animation*)s_shake_animation, AnimationCurveLinear);
   animation_schedule((Animation*)s_shake_animation);
+  
+  GRect weather1_start, weather1_finish;
+  GRect weather2_start, weather2_finish;
+  GRect weather3_start, weather3_finish;
+  GRect weather4_start, weather4_finish;
+  
+  weather1_start = GRect(-0, -168, BOX_X, BOX_Y);
+  weather1_finish = GRect(0, 0, BOX_X, BOX_Y);
+  
+  weather2_start = GRect(81, -168, BOX_X, BOX_Y);
+  weather2_finish = GRect(82, 0, BOX_X, BOX_Y);
+
+  weather3_start = GRect(0, 266, BOX_X, BOX_Y);
+  weather3_finish = GRect(0, 98, BOX_X, BOX_Y);
+
+  weather4_start = GRect(82, 266, BOX_X, BOX_Y);
+  weather4_finish = GRect(82, 98, BOX_X, BOX_Y);
+
+    if (shake_reverse == true) {
+      s_weather1_animation = property_animation_create_layer_frame(s_weather1_parent, &weather1_finish, &weather1_start);
+    }
+    else {
+      s_weather1_animation = property_animation_create_layer_frame(s_weather1_parent, &weather1_start, &weather1_finish);
+    }
+    animation_set_duration((Animation*)s_weather1_animation, ANIM_DURATION);
+    animation_set_delay((Animation*)s_weather1_animation, ANIM_DELAY_SUN);
+    animation_set_curve((Animation*)s_weather1_animation, AnimationCurveEaseInOut);
+    animation_schedule((Animation*)s_weather1_animation);
+  
+    if (shake_reverse == true) {
+      s_weather2_animation = property_animation_create_layer_frame(s_weather2_parent, &weather2_finish, &weather2_start);
+    }
+    else {
+      s_weather2_animation = property_animation_create_layer_frame(s_weather2_parent, &weather2_start, &weather2_finish);
+    }
+    animation_set_duration((Animation*)s_weather2_animation, ANIM_DURATION);
+    animation_set_delay((Animation*)s_weather2_animation, ANIM_DELAY_SUN);
+    animation_set_curve((Animation*)s_weather2_animation, AnimationCurveEaseInOut);
+    animation_schedule((Animation*)s_weather2_animation);
+
+    if (shake_reverse == true) {
+      s_weather3_animation = property_animation_create_layer_frame(s_weather3_parent, &weather3_finish, &weather3_start);
+    }
+    else {
+      s_weather3_animation = property_animation_create_layer_frame(s_weather3_parent, &weather3_start, &weather3_finish);
+    }
+    animation_set_duration((Animation*)s_weather3_animation, ANIM_DURATION);
+    animation_set_delay((Animation*)s_weather3_animation, ANIM_DELAY_SUN);
+    animation_set_curve((Animation*)s_weather3_animation, AnimationCurveEaseInOut);
+    animation_schedule((Animation*)s_weather3_animation);
+    
+    if (shake_reverse == true) {
+      s_weather4_animation = property_animation_create_layer_frame(s_weather4_parent, &weather4_finish, &weather4_start);
+    }
+    else {
+      s_weather4_animation = property_animation_create_layer_frame(s_weather4_parent, &weather4_start, &weather4_finish);
+    }
+    animation_set_duration((Animation*)s_weather4_animation, ANIM_DURATION);
+    animation_set_delay((Animation*)s_weather4_animation, ANIM_DELAY_SUN);
+    animation_set_curve((Animation*)s_weather4_animation, AnimationCurveEaseInOut);
+    animation_schedule((Animation*)s_weather4_animation);
 }
 
 static void info_animation() {
@@ -480,23 +615,38 @@ static void main_window_load(Window *window) {
   s_minute1_parent = layer_create(GRect(0,252,BOX_X,BOX_Y));
   s_minute2_parent = layer_create(GRect(72,252,BOX_X,BOX_Y));
   
+  s_weather1_parent = layer_create(GRect(0,-168,BOX_X,BOX_Y));
+  s_weather2_parent = layer_create(GRect(72,-168,BOX_X,BOX_Y));
+  s_weather3_parent = layer_create(GRect(0,252,BOX_X,BOX_Y));
+  s_weather4_parent = layer_create(GRect(72,252,BOX_X,BOX_Y));
+  
   s_weather_label = text_layer_create(GRect(0,73,62,23));
   s_day_label = text_layer_create(GRect(0,73,62,23));
   s_month_label = text_layer_create(GRect(10,73,62,23));
   s_date_label = text_layer_create(GRect(10,73,62,23));
-  s_conditions_label = text_layer_create(GRect(0,0,62,23));
-  s_humidity_label = text_layer_create(GRect(82,0,62,23));
+  s_conditions_label = text_layer_create(GRect(82,0,62,23));
+  s_humidity_label = text_layer_create(GRect(0,0,62,23));
   
   s_hour1_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
   s_hour2_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
   s_minute1_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
   s_minute2_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
   
+  s_weather1_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
+  s_weather2_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
+  s_weather3_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
+  s_weather4_layer = bitmap_layer_create(GRect(0,0,BOX_X,BOX_Y));
+  
   #ifdef PBL_COLOR
     bitmap_layer_set_compositing_mode(s_hour1_layer, GCompOpSet);
     bitmap_layer_set_compositing_mode(s_hour2_layer, GCompOpSet);
     bitmap_layer_set_compositing_mode(s_minute1_layer, GCompOpSet);
     bitmap_layer_set_compositing_mode(s_minute2_layer, GCompOpSet);
+    
+    bitmap_layer_set_compositing_mode(s_weather1_layer, GCompOpSet);
+    bitmap_layer_set_compositing_mode(s_weather2_layer, GCompOpSet);
+    bitmap_layer_set_compositing_mode(s_weather3_layer, GCompOpSet);
+    bitmap_layer_set_compositing_mode(s_weather4_layer, GCompOpSet);
   #endif
   
   text_layer_set_colors(s_weather_label, GColorWhite, GColorClear);
@@ -546,10 +696,20 @@ static void main_window_load(Window *window) {
   layer_add_to_layer(s_minute1_parent, s_background_layer);
   layer_add_to_layer(s_minute2_parent, s_background_layer);
   
+  layer_add_to_layer(s_weather1_parent, s_background_layer);
+  layer_add_to_layer(s_weather2_parent, s_background_layer);
+  layer_add_to_layer(s_weather3_parent, s_background_layer);
+  layer_add_to_layer(s_weather4_parent, s_background_layer);
+  
   bitmap_layer_add_to_layer(s_hour1_layer, s_hour1_parent);
   bitmap_layer_add_to_layer(s_hour2_layer, s_hour2_parent);
   bitmap_layer_add_to_layer(s_minute1_layer, s_minute1_parent);
   bitmap_layer_add_to_layer(s_minute2_layer, s_minute2_parent);
+  
+  bitmap_layer_add_to_layer(s_weather1_layer, s_weather1_parent);
+  bitmap_layer_add_to_layer(s_weather2_layer, s_weather2_parent);
+  bitmap_layer_add_to_layer(s_weather3_layer, s_weather3_parent);
+  bitmap_layer_add_to_layer(s_weather4_layer, s_weather4_parent);
   
   text_layer_add_to_layer(s_weather_label, s_date_1_layer);
   text_layer_add_to_layer(s_day_label, s_date_1_layer);

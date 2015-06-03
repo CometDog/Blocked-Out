@@ -6,8 +6,11 @@ Blocked Out
 
 #define COUNTRY 0
 #define TEMPERATURE 1
-#define CONDITIONS 2
-#define HUMIDITY 3
+#define CONDITIONS_1 2
+#define CONDITIONS_2 3
+#define CONDITIONS_3 4
+#define CONDITIONS_4 5
+#define HUMIDITY 6
 
 #define BOX_X 63
 #define BOX_Y 70
@@ -20,11 +23,19 @@ Blocked Out
 static Window *s_main_window;
 static Layer *s_background_layer, *s_info_layer, *s_date_1_layer, *s_date_2_layer, *s_ch_layer, *s_bluetooth_layer, *s_battery_layer;
 static TextLayer *s_weather_label, *s_day_label, *s_month_label, *s_date_label, *s_conditions_label, *s_humidity_label;
+
 static Layer *s_hour1_parent, *s_hour2_parent, *s_minute1_parent, *s_minute2_parent;
+static Layer *s_weather1_parent, *s_weather2_parent, *s_weather3_parent, *s_weather4_parent;
+
 static BitmapLayer *s_hour1_layer, *s_hour2_layer, *s_minute1_layer, *s_minute2_layer;
+static BitmapLayer *s_weather1_layer, *s_weather2_layer, *s_weather3_layer, *s_weather4_layer;
+
 static GBitmap *s_hour1_bitmap, *s_hour2_bitmap, *s_minute1_bitmap, *s_minute2_bitmap; 
-static PropertyAnimation *s_info_animation, *s_date_1_animation, *s_date_2_animation;
-static PropertyAnimation *s_hour1_animation, *s_hour2_animation, *s_minute1_animation, *s_minute2_animation, *s_shake_animation;
+static GBitmap *s_weather1_bitmap, *s_weather2_bitmap, *s_weather3_bitmap, *s_weather4_bitmap;
+
+static PropertyAnimation *s_info_animation, *s_date_1_animation, *s_date_2_animation, *s_shake_animation;
+static PropertyAnimation *s_hour1_animation, *s_hour2_animation, *s_minute1_animation, *s_minute2_animation;
+static PropertyAnimation *s_weather1_animation, *s_weather2_animation, *s_weather3_animation, *s_weather4_animation;
 
 static GFont s_info_font;
 
@@ -43,9 +54,14 @@ static int16_t degree;
 static int16_t low;
 static int16_t high;
 
-static char *conditions;
+static int16_t conditions1;
+static int16_t conditions2;
+static int16_t conditions3;
+static int16_t conditions4;
 
 static int16_t humidity;
+
+int8_t i = 0;
 
 static int16_t bat;
 static int16_t Y_bat;
@@ -85,6 +101,20 @@ const int TIME_RESOURCE_IDS[] = {
   RESOURCE_ID_SEVEN,
   RESOURCE_ID_EIGHT,
   RESOURCE_ID_NINE
+};
+
+const int WEATHER_RESOURCE_IDS[] = {
+  RESOURCE_ID_CLEAR,
+  RESOURCE_ID_FAIR,
+  RESOURCE_ID_MOSTLY_CLOUDY,
+  RESOURCE_ID_CLEAR_NIGHT,
+  RESOURCE_ID_FAIR_NIGHT,
+  RESOURCE_ID_MOSTLY_CLOUDY_NIGHT,
+  RESOURCE_ID_CLOUDY,
+  RESOURCE_ID_DRIZZLE,
+  RESOURCE_ID_SHOWERS,
+  RESOURCE_ID_THUNDERSTORMS,
+  RESOURCE_ID_FOG
 };
 
 static void do_animation();

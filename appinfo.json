@@ -2,8 +2,11 @@
     "appKeys": {
         "COUNTRY": 0,
         "TEMPERATURE": 1,
-        "CONDITIONS": 2,
-        "HUMIDITY": 3
+        "CONDITIONS_1": 2,
+        "CONDITIONS_2": 3,
+        "CONDITIONS_3": 4,
+        "CONDITIONS_4": 5,
+        "HUMIDITY": 6
     },
     "capabilities": [
         "location"
@@ -78,13 +81,67 @@
                 "file": "images/background.png",
                 "name": "BACKGROUND",
                 "type": "png"
+            },
+            {
+                "file": "images/weather01Clearday.png",
+                "name": "CLEAR",
+                "type": "png"
+            },
+            {
+                "file": "images/weather02Fairday.png",
+                "name": "FAIR",
+                "type": "png"
+            },
+            {
+                "file": "images/weather03Mostlycloudyday.png",
+                "name": "MOSTLY_CLOUDY",
+                "type": "png"
+            },
+            {
+                "file": "images/weather04Clearnight.png",
+                "name": "CLEAR_NIGHT",
+                "type": "png"
+            },
+            {
+                "file": "images/weather05Fairnight.png",
+                "name": "FAIR_NIGHT",
+                "type": "png"
+            },
+            {
+                "file": "images/weather06Mostlycloudynight.png",
+                "name": "MOSTLY_CLOUDY_NIGHT",
+                "type": "png"
+            },
+            {
+                "file": "images/weather07Cloudy.png",
+                "name": "CLOUDY",
+                "type": "png"
+            },
+            {
+                "file": "images/weather08Drizzle.png",
+                "name": "DRIZZLE",
+                "type": "png"
+            },
+            {
+                "file": "images/weather09Showers.png",
+                "name": "SHOWERS",
+                "type": "png"
+            },
+            {
+                "file": "images/weather10Thunderstorms.png",
+                "name": "THUNDERSTORMS",
+                "type": "png"
+            },
+            {
+                "file": "images/weather11DustFog.png",
+                "name": "FOG",
+                "type": "png"
             }
         ]
     },
     "sdkVersion": "3",
     "shortName": "Blocked Out",
     "targetPlatforms": [
-        "aplite",
         "basalt"
     ],
     "uuid": "26430506-bddb-4186-be49-74b6ea31bc1e",
