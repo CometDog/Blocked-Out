@@ -24,7 +24,10 @@ function locationSuccess(pos) {
         cof = 0;
       }
 
-      var temperature = Math.round(json.list[0].main.temp - 273.15);
+      var temperature1 = Math.round(json.list[0].main.temp - 273.15);
+      var temperature2 = Math.round(json.list[1].main.temp - 273.15);
+      var temperature3 = Math.round(json.list[2].main.temp - 273.15);
+      var temperature4 = Math.round(json.list[3].main.temp - 273.15);
       
       var conditions1 = json.list[0].weather[0].id;
       var conditions2 = json.list[1].weather[0].id;
@@ -35,7 +38,10 @@ function locationSuccess(pos) {
       
       var dictionary = {
         "COUNTRY": cof,
-        "TEMPERATURE": temperature,
+        "TEMPERATURE_1": temperature1,
+        "TEMPERATURE_2": temperature2,
+        "TEMPERATURE_3": temperature3,
+        "TEMPERATURE_4": temperature4,
         "CONDITIONS_1": conditions1,
         "CONDITIONS_2": conditions2,
         "CONDITIONS_3": conditions3,

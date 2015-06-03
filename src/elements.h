@@ -5,12 +5,15 @@ Blocked Out
 */
 
 #define COUNTRY 0
-#define TEMPERATURE 1
-#define CONDITIONS_1 2
-#define CONDITIONS_2 3
-#define CONDITIONS_3 4
-#define CONDITIONS_4 5
-#define HUMIDITY 6
+#define TEMPERATURE_1 1
+#define TEMPERATURE_2 2
+#define TEMPERATURE_3 3
+#define TEMPERATURE_4 4
+#define CONDITIONS_1 5
+#define CONDITIONS_2 6
+#define CONDITIONS_3 7
+#define CONDITIONS_4 8
+#define HUMIDITY 9
 
 #define BOX_X 63
 #define BOX_Y 70
@@ -22,7 +25,8 @@ Blocked Out
 
 static Window *s_main_window;
 static Layer *s_background_layer, *s_info_layer, *s_date_1_layer, *s_date_2_layer, *s_ch_layer, *s_bluetooth_layer, *s_battery_layer;
-static TextLayer *s_weather_label, *s_day_label, *s_month_label, *s_date_label, *s_conditions_label, *s_humidity_label;
+static TextLayer *s_weather_label, *s_weather1_label, *s_weather2_label, *s_weather3_label, *s_weather4_label;
+static TextLayer *s_day_label, *s_month_label, *s_date_label, *s_conditions_label, *s_humidity_label;
 
 static Layer *s_hour1_parent, *s_hour2_parent, *s_minute1_parent, *s_minute2_parent;
 static Layer *s_weather1_parent, *s_weather2_parent, *s_weather3_parent, *s_weather4_parent;
@@ -49,7 +53,10 @@ static int8_t minute1;
 static int8_t minute2;
 
 static int8_t country;
-static int16_t degree;
+static int16_t degree1;
+static int16_t degree2;
+static int16_t degree3;
+static int16_t degree4;
 
 static int16_t low;
 static int16_t high;
@@ -58,6 +65,10 @@ static int16_t conditions1;
 static int16_t conditions2;
 static int16_t conditions3;
 static int16_t conditions4;
+static int8_t condcon1;
+static int8_t condcon2;
+static int8_t condcon3;
+static int8_t condcon4;
 
 static int16_t humidity;
 
@@ -81,7 +92,10 @@ static bool animations = true;
 
 static bool bt_connected;
 
-static char s_weather_buffer[] = "XXXX";
+static char s_weather1_buffer[] = "XXXX";
+static char s_weather2_buffer[] = "XXXX";
+static char s_weather3_buffer[] = "XXXX";
+static char s_weather4_buffer[] = "XXXX";
 static char s_day_buffer[] = "XXX";
 static char s_month_buffer[] = "XXX";
 static char s_date_buffer[] = "XX";
