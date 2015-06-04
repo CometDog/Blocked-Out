@@ -233,24 +233,13 @@ static void shake_animation() {
   
   GRect shake_start, shake_finish;
   
-  shake_start = GRect(0,73,144,0);
-  shake_finish = GRect(0,73,144,28);
-  
-  if (shake_reverse != true) {
-    s_shake_animation = property_animation_create_layer_frame(s_ch_layer, &shake_start, &shake_finish);
-  }
-  else {
-    s_shake_animation = property_animation_create_layer_frame(s_ch_layer, &shake_finish, &shake_start);
-  }
-  animation_set_duration((Animation*)s_shake_animation, ANIM_DURATION);
-  animation_set_delay((Animation*)s_shake_animation, ANIM_DELAY_SUN);
-  animation_set_curve((Animation*)s_shake_animation, AnimationCurveLinear);
-  animation_schedule((Animation*)s_shake_animation);
-  
   GRect weather1_start, weather1_finish;
   GRect weather2_start, weather2_finish;
   GRect weather3_start, weather3_finish;
   GRect weather4_start, weather4_finish;
+  
+  shake_start = GRect(0,73,144,0);
+  shake_finish = GRect(0,73,144,28);
   
   weather1_start = GRect(-0, -168, BOX_X, BOX_Y);
   weather1_finish = GRect(0, 0, BOX_X, BOX_Y);
@@ -263,50 +252,61 @@ static void shake_animation() {
 
   weather4_start = GRect(82, 266, BOX_X, BOX_Y);
   weather4_finish = GRect(82, 98, BOX_X, BOX_Y);
-
-    if (shake_reverse == true) {
-      s_weather1_animation = property_animation_create_layer_frame(s_weather1_parent, &weather1_finish, &weather1_start);
-    }
-    else {
-      s_weather1_animation = property_animation_create_layer_frame(s_weather1_parent, &weather1_start, &weather1_finish);
-    }
-    animation_set_duration((Animation*)s_weather1_animation, ANIM_DURATION);
-    animation_set_delay((Animation*)s_weather1_animation, ANIM_DELAY_SUN);
-    animation_set_curve((Animation*)s_weather1_animation, AnimationCurveEaseInOut);
-    animation_schedule((Animation*)s_weather1_animation);
   
-    if (shake_reverse == true) {
-      s_weather2_animation = property_animation_create_layer_frame(s_weather2_parent, &weather2_finish, &weather2_start);
-    }
-    else {
-      s_weather2_animation = property_animation_create_layer_frame(s_weather2_parent, &weather2_start, &weather2_finish);
-    }
-    animation_set_duration((Animation*)s_weather2_animation, ANIM_DURATION);
-    animation_set_delay((Animation*)s_weather2_animation, ANIM_DELAY_SUN);
-    animation_set_curve((Animation*)s_weather2_animation, AnimationCurveEaseInOut);
-    animation_schedule((Animation*)s_weather2_animation);
+  if (shake_reverse != true) {
+    s_shake_animation = property_animation_create_layer_frame(s_ch_layer, &shake_start, &shake_finish);
+  }
+  else {
+    s_shake_animation = property_animation_create_layer_frame(s_ch_layer, &shake_finish, &shake_start);
+  }
+  animation_set_duration((Animation*)s_shake_animation, ANIM_DURATION);
+  animation_set_delay((Animation*)s_shake_animation, ANIM_DELAY_SUN);
+  animation_set_curve((Animation*)s_shake_animation, AnimationCurveLinear);
+  animation_schedule((Animation*)s_shake_animation);
 
-    if (shake_reverse == true) {
-      s_weather3_animation = property_animation_create_layer_frame(s_weather3_parent, &weather3_finish, &weather3_start);
-    }
-    else {
-      s_weather3_animation = property_animation_create_layer_frame(s_weather3_parent, &weather3_start, &weather3_finish);
-    }
-    animation_set_duration((Animation*)s_weather3_animation, ANIM_DURATION);
-    animation_set_delay((Animation*)s_weather3_animation, ANIM_DELAY_SUN);
-    animation_set_curve((Animation*)s_weather3_animation, AnimationCurveEaseInOut);
-    animation_schedule((Animation*)s_weather3_animation);
+  if (shake_reverse == true) {
+    s_weather1_animation = property_animation_create_layer_frame(s_weather1_parent, &weather1_finish, &weather1_start);
+  }
+  else {
+    s_weather1_animation = property_animation_create_layer_frame(s_weather1_parent, &weather1_start, &weather1_finish);
+  }
+  animation_set_duration((Animation*)s_weather1_animation, ANIM_DURATION);
+  animation_set_delay((Animation*)s_weather1_animation, ANIM_DELAY_SUN);
+  animation_set_curve((Animation*)s_weather1_animation, AnimationCurveEaseInOut);
+  animation_schedule((Animation*)s_weather1_animation);
+  
+  if (shake_reverse == true) {
+    s_weather2_animation = property_animation_create_layer_frame(s_weather2_parent, &weather2_finish, &weather2_start);
+  }
+  else {
+    s_weather2_animation = property_animation_create_layer_frame(s_weather2_parent, &weather2_start, &weather2_finish);
+  }
+  animation_set_duration((Animation*)s_weather2_animation, ANIM_DURATION);
+  animation_set_delay((Animation*)s_weather2_animation, ANIM_DELAY_SUN);
+  animation_set_curve((Animation*)s_weather2_animation, AnimationCurveEaseInOut);
+  animation_schedule((Animation*)s_weather2_animation);
+
+  if (shake_reverse == true) {
+    s_weather3_animation = property_animation_create_layer_frame(s_weather3_parent, &weather3_finish, &weather3_start);
+  }
+  else {
+    s_weather3_animation = property_animation_create_layer_frame(s_weather3_parent, &weather3_start, &weather3_finish);
+  }
+  animation_set_duration((Animation*)s_weather3_animation, ANIM_DURATION);
+  animation_set_delay((Animation*)s_weather3_animation, ANIM_DELAY_SUN);
+  animation_set_curve((Animation*)s_weather3_animation, AnimationCurveEaseInOut);
+  animation_schedule((Animation*)s_weather3_animation);
     
-    if (shake_reverse == true) {
-      s_weather4_animation = property_animation_create_layer_frame(s_weather4_parent, &weather4_finish, &weather4_start);
-    }
-    else {
-      s_weather4_animation = property_animation_create_layer_frame(s_weather4_parent, &weather4_start, &weather4_finish);
-    }
-    animation_set_duration((Animation*)s_weather4_animation, ANIM_DURATION);
-    animation_set_delay((Animation*)s_weather4_animation, ANIM_DELAY_SUN);
-    animation_set_curve((Animation*)s_weather4_animation, AnimationCurveEaseInOut);
-    animation_schedule((Animation*)s_weather4_animation);
+  if (shake_reverse == true) {
+    s_weather4_animation = property_animation_create_layer_frame(s_weather4_parent, &weather4_finish, &weather4_start);
+  }
+  else {
+    s_weather4_animation = property_animation_create_layer_frame(s_weather4_parent, &weather4_start, &weather4_finish);
+  }
+  animation_set_duration((Animation*)s_weather4_animation, ANIM_DURATION);
+  animation_set_delay((Animation*)s_weather4_animation, ANIM_DELAY_SUN);
+  animation_set_curve((Animation*)s_weather4_animation, AnimationCurveEaseInOut);
+  animation_schedule((Animation*)s_weather4_animation);
     
   gbitmap_destroy_safe(s_weather1_bitmap);
   gbitmap_destroy_safe(s_weather2_bitmap);
