@@ -252,16 +252,16 @@ static void shake_animation() {
   GRect weather3_start, weather3_finish;
   GRect weather4_start, weather4_finish;
   
-  weather1_start = GRect(-0, -168, BOX_X, BOX_Y);
+  weather1_start = GRect(0, 0, BOX_X, 0);
   weather1_finish = GRect(0, 0, BOX_X, BOX_Y);
   
-  weather2_start = GRect(82, -168, BOX_X, BOX_Y);
+  weather2_start = GRect(82, 0, BOX_X, 0);
   weather2_finish = GRect(82, 0, BOX_X, BOX_Y);
 
-  weather3_start = GRect(0, 266, BOX_X, BOX_Y);
+  weather3_start = GRect(0, 98, BOX_X, 0);
   weather3_finish = GRect(0, 98, BOX_X, BOX_Y);
 
-  weather4_start = GRect(82, 266, BOX_X, BOX_Y);
+  weather4_start = GRect(82, 98, BOX_X, 0);
   weather4_finish = GRect(82, 98, BOX_X, BOX_Y);
 
     if (shake_reverse == true) {
