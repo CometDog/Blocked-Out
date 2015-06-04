@@ -48,35 +48,59 @@ static void conditions_select(int16_t cond) {
   }
   int16_t conditions = cond;
   
-  if (conditions >= 200 && conditions <= 232) {
+  if ((conditions >= 200 && conditions <= 232) || conditions == 960 || conditions == 961 ) {
     conditions = 9;
   }
   else if (conditions >= 300 && conditions <= 321) {
     conditions = 7;
   }
-  else if (conditions >= 500 && conditions <= 622) {
+  else if (conditions >= 500 && conditions <= 531) {
     conditions = 8;
   }
-  else if (conditions >= 701 && conditions <= 781) {
+  else if (conditions >= 701 && conditions <= 762) {
     conditions = 10;
   }
-  else if (conditions == 800) {
+  else if (conditions == 800 || conditions == 951) {
     conditions = 0;
     if (night == true) {
       conditions += 3;
     }
   }
-  else if (conditions >= 801 && conditions <= 802) {
+  else if (conditions >= 802 && conditions <= 803) {
     conditions = 2;
     if (night == true) {
       conditions += 3;
     }
   }
-  else if (conditions >= 803 && conditions <= 804) {
+  else if (conditions == 801) {
+    conditions = 1;
+    if (night == true) {
+      conditions += 3;
+    }
+  }
+  else if (conditions == 804) {
     conditions = 6;
   }
-  else {
+  else if (conditions == 600 || conditions == 601) {
+    conditions = 11;
+  }
+  else if (conditions == 602) {
+    conditions = 12;
+  }
+  else if (conditions == 611 || conditions == 906) {
+    conditions = 13;
+  }
+  else if (conditions >= 615 && conditions <= 622) {
+    conditions = 15;
+  }
+  else if (conditions == 612) {
+    conditions = 16;
+  }
+  else if ((conditions >= 200 && conditions <= 232) || conditions == 960 || conditions == 961) {
     conditions = 10;
+  }
+  else {
+    conditions = 17;
   }
   
   if (i == 0) {

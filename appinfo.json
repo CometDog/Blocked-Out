@@ -139,13 +139,47 @@
                 "file": "images/weather11DustFog.png",
                 "name": "FOG",
                 "type": "png"
+            },
+            {
+                "file": "images/weather12Snowflurries.png",
+                "name": "SNOW",
+                "type": "png"
+            },
+            {
+                "file": "images/weather13Heavysnow.png",
+                "name": "HEAVY_SNOW",
+                "type": "png"
+            },
+            {
+                "file": "images/weather14Hail.png",
+                "name": "HAIL",
+                "type": "png"
+            },
+            {
+                "file": "images/weather15Snowandhail.png",
+                "name": "SNOW_HAIL",
+                "type": "png"
+            },
+            {
+                "file": "images/weather16Rainandsnow.png",
+                "name": "RAIN_SNOW",
+                "type": "png"
+            },
+            {
+                "file": "images/weather17Rainandhail.png",
+                "name": "RAIN_HAIL",
+                "type": "png"
+            },
+            {
+                "file": "images/weather18Windy.png",
+                "name": "WIND",
+                "type": "png"
             }
         ]
     },
     "sdkVersion": "3",
     "shortName": "Blocked Out",
     "targetPlatforms": [
-        "aplite",
         "basalt"
     ],
     "uuid": "26430506-bddb-4186-be49-74b6ea31bc1e",
