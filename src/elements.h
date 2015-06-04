@@ -52,6 +52,8 @@ static int8_t hour2;
 static int8_t minute1;
 static int8_t minute2;
 
+static int8_t futurehour;
+
 static int8_t country;
 static int16_t degree1;
 static int16_t degree2;

@@ -41,6 +41,8 @@ static void conditions_select(int16_t cond) {
   time_t epoch = time(NULL); 
   struct tm *t = localtime(&epoch);
   
+  futurehour = t->tm_hour + (3 * i);
+  
   if (t->tm_hour >= 20 || t->tm_hour <= 6) {
     night = true;
   }
