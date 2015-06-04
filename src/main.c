@@ -262,7 +262,7 @@ static void shake_animation() {
     s_shake_animation = property_animation_create_layer_frame(s_ch_layer, &shake_finish, &shake_start);
   }
   animation_set_duration((Animation*)s_shake_animation, ANIM_DURATION);
-  animation_set_delay((Animation*)s_shake_animation, ANIM_DELAY_SUN);
+  animation_set_delay((Animation*)s_shake_animation, ANIM_DELAY_FORE);
   animation_set_curve((Animation*)s_shake_animation, AnimationCurveLinear);
   animation_schedule((Animation*)s_shake_animation);
 
@@ -273,7 +273,7 @@ static void shake_animation() {
     s_weather1_animation = property_animation_create_layer_frame(s_weather1_parent, &weather1_start, &weather1_finish);
   }
   animation_set_duration((Animation*)s_weather1_animation, ANIM_DURATION);
-  animation_set_delay((Animation*)s_weather1_animation, ANIM_DELAY_SUN);
+  animation_set_delay((Animation*)s_weather1_animation, ANIM_DELAY_FORE);
   animation_set_curve((Animation*)s_weather1_animation, AnimationCurveEaseInOut);
   animation_schedule((Animation*)s_weather1_animation);
   
@@ -284,7 +284,7 @@ static void shake_animation() {
     s_weather2_animation = property_animation_create_layer_frame(s_weather2_parent, &weather2_start, &weather2_finish);
   }
   animation_set_duration((Animation*)s_weather2_animation, ANIM_DURATION);
-  animation_set_delay((Animation*)s_weather2_animation, ANIM_DELAY_SUN);
+  animation_set_delay((Animation*)s_weather2_animation, ANIM_DELAY_FORE);
   animation_set_curve((Animation*)s_weather2_animation, AnimationCurveEaseInOut);
   animation_schedule((Animation*)s_weather2_animation);
 
@@ -295,7 +295,7 @@ static void shake_animation() {
     s_weather3_animation = property_animation_create_layer_frame(s_weather3_parent, &weather3_start, &weather3_finish);
   }
   animation_set_duration((Animation*)s_weather3_animation, ANIM_DURATION);
-  animation_set_delay((Animation*)s_weather3_animation, ANIM_DELAY_SUN);
+  animation_set_delay((Animation*)s_weather3_animation, ANIM_DELAY_FORE);
   animation_set_curve((Animation*)s_weather3_animation, AnimationCurveEaseInOut);
   animation_schedule((Animation*)s_weather3_animation);
     
@@ -306,7 +306,7 @@ static void shake_animation() {
     s_weather4_animation = property_animation_create_layer_frame(s_weather4_parent, &weather4_start, &weather4_finish);
   }
   animation_set_duration((Animation*)s_weather4_animation, ANIM_DURATION);
-  animation_set_delay((Animation*)s_weather4_animation, ANIM_DELAY_SUN);
+  animation_set_delay((Animation*)s_weather4_animation, ANIM_DELAY_FORE);
   animation_set_curve((Animation*)s_weather4_animation, AnimationCurveEaseInOut);
   animation_schedule((Animation*)s_weather4_animation);
     
@@ -600,20 +600,20 @@ static void timer_callback(void *data) {
 static void timer_2_callback(void *data) {
   shake_reverse = true;
   shake_animation();
-  sun_on = false;
+  fore_on = false;
 }
 
 static void tap_handler(AccelAxisType axis, int32_t direction) {
-  if (sun_on == false) {
+  if (fore_on == false) {
     shake_reverse = false;
     shake_animation();
-    sun_on = true;
+    fore_on = true;
   }
   animations = true;
   app_timer_cancel(timer);
   app_timer_cancel(timer_2);
   timer = app_timer_register(180 * 1000, timer_callback, NULL);
-  timer_2 = app_timer_register(2 * 1000, timer_2_callback, NULL);
+  timer_2 = app_timer_register(4 * 1000, timer_2_callback, NULL);
 }
 
 static void bt_handler(bool connected) {
