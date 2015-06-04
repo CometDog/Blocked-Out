@@ -191,10 +191,10 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   weather_conditions();
   
   if (country == 1) {
-    degree1 = (1.8 * degree1) + 42;
-    degree2 = (1.8 * degree2) + 42;
-    degree3 = (1.8 * degree3) + 42;
-    degree4 = (1.8 * degree4) + 42;
+    degree1 = (1.8 * degree1) + 32;
+    degree2 = (1.8 * degree2) + 32;
+    degree3 = (1.8 * degree3) + 32;
+    degree4 = (1.8 * degree4) + 32;
   }
   
   if (degree1 < 100) {
