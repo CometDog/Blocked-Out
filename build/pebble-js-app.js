@@ -28,11 +28,12 @@ function locationSuccess(pos) {
       var temperature2 = Math.round(json.list[1].main.temp - 273.15);
       var temperature3 = Math.round(json.list[2].main.temp - 273.15);
       var temperature4 = Math.round(json.list[3].main.temp - 273.15);
+      var temperature5 = Math.round(json.list[4].main.temp - 273.15);
       
-      var conditions1 = json.list[0].weather[0].id;
-      var conditions2 = json.list[1].weather[0].id;
-      var conditions3 = json.list[2].weather[0].id;
-      var conditions4 = json.list[3].weather[0].id;
+      var conditions1 = json.list[1].weather[0].id;
+      var conditions2 = json.list[2].weather[0].id;
+      var conditions3 = json.list[3].weather[0].id;
+      var conditions4 = json.list[4].weather[0].id;
       
       var humidity = json.list[0].main.humidity;
       
@@ -42,6 +43,7 @@ function locationSuccess(pos) {
         "TEMPERATURE_2": temperature2,
         "TEMPERATURE_3": temperature3,
         "TEMPERATURE_4": temperature4,
+        "TEMPERATURE_5": temperature5,
         "CONDITIONS_1": conditions1,
         "CONDITIONS_2": conditions2,
         "CONDITIONS_3": conditions3,

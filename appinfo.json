@@ -5,11 +5,12 @@
         "TEMPERATURE_2": 2,
         "TEMPERATURE_3": 3,
         "TEMPERATURE_4": 4,
-        "CONDITIONS_1": 5,
-        "CONDITIONS_2": 6,
-        "CONDITIONS_3": 7,
-        "CONDITIONS_4": 8,
-        "HUMIDITY": 9
+        "TEMPERATURE_5": 5,
+        "CONDITIONS_1": 6,
+        "CONDITIONS_2": 7,
+        "CONDITIONS_3": 8,
+        "CONDITIONS_4": 9,
+        "HUMIDITY": 10
     },
     "capabilities": [
         "location"

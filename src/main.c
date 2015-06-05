@@ -41,10 +41,13 @@ static void conditions_select(int16_t cond) {
   time_t epoch = time(NULL); 
   struct tm *t = localtime(&epoch);
   
-  futurehour = t->tm_hour + (3 * i);
+  futurehour = (t->tm_hour + (3 * (i + 1))) % 24;
   
-  if (t->tm_hour >= 20 || t->tm_hour <= 6) {
+  if (futurehour >= 20 || futurehour <= 6) {
     night = true;
+  }
+  else {
+    night = false;
   }
   int16_t conditions = cond;
   
@@ -165,6 +168,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     case TEMPERATURE_4:
       degree4 = (int)t->value->int16;
       break;
+    case TEMPERATURE_5:
+      degree5 = (int)t->value->int16;
+      break;
     case CONDITIONS_1:
       conditions1 = (int)t->value->int16;
       break;
@@ -195,6 +201,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     degree2 = (1.8 * degree2) + 32;
     degree3 = (1.8 * degree3) + 32;
     degree4 = (1.8 * degree4) + 32;
+    degree5 = (1.8 * degree5) + 32;
   }
   
   if (degree1 < 100) {
@@ -202,18 +209,20 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     print_int(s_weather2_buffer, "%d°", degree2);
     print_int(s_weather3_buffer, "%d°", degree3);
     print_int(s_weather4_buffer, "%d°", degree4);
+    print_int(s_weather5_buffer, "%d°", degree5);
   }
   else {
     print_int(s_weather1_buffer, "%d", degree1);
     print_int(s_weather2_buffer, "%d", degree2);
     print_int(s_weather3_buffer, "%d", degree3);
     print_int(s_weather4_buffer, "%d", degree4);
+    print_int(s_weather5_buffer, "%d", degree5);
   }
   
   print_int(s_humidity_buffer, "H:%d%%", humidity);
 
   text_layer_set_text(s_weather_label, s_weather1_buffer);
-  text_layer_set_text(s_weather1_label, s_weather1_buffer);
+  text_layer_set_text(s_weather1_label, s_weather5_buffer);
   text_layer_set_text(s_weather2_label, s_weather2_buffer);
   text_layer_set_text(s_weather3_label, s_weather3_buffer);
   text_layer_set_text(s_weather4_label, s_weather4_buffer);

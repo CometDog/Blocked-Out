@@ -9,11 +9,12 @@ Blocked Out
 #define TEMPERATURE_2 2
 #define TEMPERATURE_3 3
 #define TEMPERATURE_4 4
-#define CONDITIONS_1 5
-#define CONDITIONS_2 6
-#define CONDITIONS_3 7
-#define CONDITIONS_4 8
-#define HUMIDITY 9
+#define TEMPERATURE_5 5
+#define CONDITIONS_1 6
+#define CONDITIONS_2 7
+#define CONDITIONS_3 8
+#define CONDITIONS_4 9
+#define HUMIDITY 10
 
 #define BOX_X 63
 #define BOX_Y 70
@@ -59,6 +60,7 @@ static int16_t degree1;
 static int16_t degree2;
 static int16_t degree3;
 static int16_t degree4;
+static int16_t degree5;
 
 static bool night;
 
@@ -100,11 +102,10 @@ static char s_weather1_buffer[] = "XXXX";
 static char s_weather2_buffer[] = "XXXX";
 static char s_weather3_buffer[] = "XXXX";
 static char s_weather4_buffer[] = "XXXX";
+static char s_weather5_buffer[] = "XXXX";
 static char s_day_buffer[] = "XXX";
-static char s_month_buffer[] = "XXX";
+static char s_month_buffer[] = "XXXXX";
 static char s_date_buffer[] = "XX";
-static char s_low_buffer[] = "L:XXXX";
-static char s_high_buffer[] = "H:XXXX";
 static char s_conditions_buffer[32];
 static char s_humidity_buffer[] = "H:XXXX";
 
