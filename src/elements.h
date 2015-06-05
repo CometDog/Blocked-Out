@@ -104,7 +104,7 @@ static char s_weather3_buffer[] = "XXXX";
 static char s_weather4_buffer[] = "XXXX";
 static char s_weather5_buffer[] = "XXXX";
 static char s_day_buffer[] = "XXX";
-static char s_month_buffer[] = "XXXXX";
+static char s_month_buffer[] = "XXXX";
 static char s_date_buffer[] = "XX";
 static char s_conditions_buffer[32];
 static char s_humidity_buffer[] = "H:XXXX";

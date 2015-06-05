@@ -501,7 +501,12 @@ static void update_date() {
   struct tm *t = localtime(&epoch);
   
   print_time(s_day_buffer, "%a", t);
-  print_time(s_month_buffer, "%b", t);
+  if (t->tm_mon == 5 || t->tm_mon == 6) {
+    print_time(s_month_buffer, "%B", t);
+  }
+  else {
+    print_time(s_month_buffer, "%b", t); 
+  }
   print_time(s_date_buffer, "%d", t); 
   
   upcase(s_day_buffer);
