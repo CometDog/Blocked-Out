@@ -1,16 +1,16 @@
 {
     "appKeys": {
-        "CONDITIONS_1": 6,
-        "CONDITIONS_2": 7,
-        "CONDITIONS_3": 8,
-        "CONDITIONS_4": 9,
         "COUNTRY": 0,
-        "HUMIDITY": 10,
         "TEMPERATURE_1": 1,
         "TEMPERATURE_2": 2,
         "TEMPERATURE_3": 3,
         "TEMPERATURE_4": 4,
-        "TEMPERATURE_5": 5
+        "TEMPERATURE_5": 5,
+        "CONDITIONS_1": 6,
+        "CONDITIONS_2": 7,
+        "CONDITIONS_3": 8,
+        "CONDITIONS_4": 9,
+        "HUMIDITY": 10
     },
     "capabilities": [
         "location"

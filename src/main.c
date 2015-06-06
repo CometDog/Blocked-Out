@@ -607,10 +607,6 @@ static void update_bat(Layer *layer, GContext *ctx) {
       graphics_context_set_fill_color(ctx, GColorRed);
       graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
     }
-    else {
-      graphics_context_set_fill_color(ctx, GColorBlack);
-      graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
-    }
   #else
     graphics_context_set_fill_color(ctx, GColorBlack);
     graphics_fill_rect(ctx, GRect(66,78,12,12), 2, GCornersAll);
@@ -782,8 +778,8 @@ static void main_window_load(Window *window) {
   layer_add_to_window(s_date_2_layer, window);
   layer_add_to_window(s_ch_layer, window);
   
-  layer_add_to_layer(s_bluetooth_layer, s_info_layer);
   layer_add_to_layer(s_battery_layer, s_info_layer);
+  layer_add_to_layer(s_bluetooth_layer, s_info_layer);
   
   layer_add_to_layer(s_hour1_parent, s_background_layer);
   layer_add_to_layer(s_hour2_parent, s_background_layer);
