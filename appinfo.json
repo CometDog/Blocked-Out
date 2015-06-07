@@ -116,52 +116,52 @@
                 "type": "png"
             },
             {
-                "file": "images/zero.png",
+                "file": "images/0.png",
                 "name": "ZERO",
                 "type": "png"
             },
             {
-                "file": "images/nine.png",
+                "file": "images/9.png",
                 "name": "NINE",
                 "type": "png"
             },
             {
-                "file": "images/eight.png",
+                "file": "images/8.png",
                 "name": "EIGHT",
                 "type": "png"
             },
             {
-                "file": "images/seven.png",
+                "file": "images/7.png",
                 "name": "SEVEN",
                 "type": "png"
             },
             {
-                "file": "images/six.png",
+                "file": "images/6.png",
                 "name": "SIX",
                 "type": "png"
             },
             {
-                "file": "images/five.png",
+                "file": "images/5.png",
                 "name": "FIVE",
                 "type": "png"
             },
             {
-                "file": "images/four.png",
+                "file": "images/4.png",
                 "name": "FOUR",
                 "type": "png"
             },
             {
-                "file": "images/three.png",
+                "file": "images/3.png",
                 "name": "THREE",
                 "type": "png"
             },
             {
-                "file": "images/two.png",
+                "file": "images/2.png",
                 "name": "TWO",
                 "type": "png"
             },
             {
-                "file": "images/one.png",
+                "file": "images/1.png",
                 "name": "ONE",
                 "type": "png"
             },
