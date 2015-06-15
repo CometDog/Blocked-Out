@@ -111,11 +111,6 @@
                 "type": "png"
             },
             {
-                "file": "images/background.png",
-                "name": "BACKGROUND",
-                "type": "png"
-            },
-            {
                 "file": "images/0.png",
                 "name": "ZERO",
                 "type": "png"
