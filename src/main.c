@@ -206,18 +206,14 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   
   if (degree1 < 100) {
     print_int(s_weather1_buffer, "%d°", degree1);
-    print_int(s_weather2_buffer, "%d°", degree2);
-    print_int(s_weather3_buffer, "%d°", degree3);
-    print_int(s_weather4_buffer, "%d°", degree4);
-    print_int(s_weather5_buffer, "%d°", degree5);
   }
   else {
     print_int(s_weather1_buffer, "%d", degree1);
-    print_int(s_weather2_buffer, "%d", degree2);
-    print_int(s_weather3_buffer, "%d", degree3);
-    print_int(s_weather4_buffer, "%d", degree4);
-    print_int(s_weather5_buffer, "%d", degree5);
   }
+  print_int(s_weather2_buffer, "%d", degree2);
+  print_int(s_weather3_buffer, "%d", degree3);
+  print_int(s_weather4_buffer, "%d", degree4);
+  print_int(s_weather5_buffer, "%d", degree5);
   
   print_int(s_humidity_buffer, "H:%d%%", humidity);
 
