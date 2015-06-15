@@ -1153,7 +1153,7 @@ DISCARD
  libm.a(*)
  libgcc.a(*)
  *(.eh_frame)
-OUTPUT(/Users/James/Development Workspaces/Pebble/Blocked-Out/build/aplite/pebble-app.elf elf32-littlearm)
+OUTPUT(/Users/James/development workspaces/pebble/Blocked-Out/build/aplite/pebble-app.elf elf32-littlearm)
 
 .ARM.attributes
                 0x0000000000000000       0x27
