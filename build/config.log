@@ -1,13 +1,13 @@
-# project  configured on Mon Jun 15 15:03:02 2015 by
+# project  configured on Tue Jun 23 13:53:27 2015 by
 # waf 1.7.11 (abi 98, python 20709f0 on darwin)
 # using /Users/James/pebble-dev/PebbleSDK-3.0/Pebble/waf configure build
 #
 ----------------------------------------
 Setting top to
-/Users/James/development workspaces/pebble/Blocked-Out
+/Users/James/Development Workspaces/Pebble/Blocked-Out
 ----------------------------------------
 Setting out to
-/Users/James/development workspaces/pebble/Blocked-Out/build
+/Users/James/Development Workspaces/Pebble/Blocked-Out/build
 ----------------------------------------
 Found Pebble SDK for basalt in:
 /Users/James/pebble-dev/PebbleSDK-3.0/Pebble/basalt
